@@ -1,3 +1,8 @@
 public class GameStarter {
-    // main method ng game
+    
+    public static void main(String[] args) {
+        GameFrame gf = new GameFrame();
+        gf.setUpGUI();
+    }
+    
 }
