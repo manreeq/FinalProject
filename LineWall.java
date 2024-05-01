@@ -3,13 +3,13 @@ import java.awt.geom.*;
 
 public class LineWall implements WallsInterface {
     
-    private double xs, xy, xe, ye, rotate;
+    private double xs, ys, xe, ye, rotate;
     private int thickness;
     private Color color;
 
-    public LineWall (double xs, double xy, double xe, double ye, int thickness, Color color) {
+    public LineWall (double xs, double ys, double xe, double ye, int thickness, Color color) {
         this.xs = xs;
-        this.xy = xy;
+        this.ys = ys;
         this.xe = xe;
         this.ye = ye;
         this.thickness = thickness;
@@ -18,10 +18,10 @@ public class LineWall implements WallsInterface {
     }
     
     public void draw(Graphics2D g2d) {
-        Line2D.Double l = new Line2D.Double(xs, xy, xe, ye);
+        Line2D.Double l = new Line2D.Double(xs, ys, xe, ye);
         g2d.setStroke(new BasicStroke(thickness));
         g2d.setColor(color);
-        g2d.rotate(Math.toRadians(rotate), xs, xy);
+        g2d.rotate(Math.toRadians(rotate), xs, ys);
         g2d.draw(l);
     }
 
