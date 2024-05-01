@@ -1,12 +1,12 @@
 import java.awt.*;
 import java.awt.geom.*;
 
-public class Walls implements GameEntity {
+public class RectangleWall implements WallsInterface {
     
     private double x, y, width, height;
     private Color color;
 
-    public Walls (double x, double y, double width, double height, Color color) {
+    public RectangleWall (double x, double y, double width, double height, Color color) {
         this.x = x;
         this.y = y;
         this.width = width;
