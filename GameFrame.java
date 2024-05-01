@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
 import javax.swing.*;
 
 public class GameFrame {
@@ -60,18 +59,15 @@ public class GameFrame {
             }
         };
 
-
-
-
         am.put("up", moveUp);
         am.put("down", moveDown);
         am.put("left", moveLeft);
         am.put("right", moveRight);
 
-        im.put(KeyStroke.getKeyStroke(87, 0), "up");
-        im.put(KeyStroke.getKeyStroke(83, 0), "down");
-        im.put(KeyStroke.getKeyStroke(65, 0), "left");
-        im.put(KeyStroke.getKeyStroke(68, 0), "right");
+        im.put(KeyStroke.getKeyStroke(87, 0, true), "up");
+        im.put(KeyStroke.getKeyStroke(83, 0, true), "down");
+        im.put(KeyStroke.getKeyStroke(65, 0, true), "left");
+        im.put(KeyStroke.getKeyStroke(68, 0, true), "right");
     }
 
 }

@@ -20,7 +20,7 @@ public class GameCanvas extends JComponent{
 
         obstacles = new MapObstacles(Color.BLACK);
 
-        player = new Player(75, 75, 30, Color.BLUE, 10, 10);
+        player = new Player(75, 75, 30, Color.BLUE, 0, 0);
 
 
         ActionListener timerListener = new ActionListener() {
@@ -44,6 +44,7 @@ public class GameCanvas extends JComponent{
         player.draw(g2d);
     }
 
+    
     public void movePlayerUp(){
         player.moveUp();
         repaint();
@@ -62,6 +63,6 @@ public class GameCanvas extends JComponent{
     public void movePlayerRight(){
         player.moveRight();
         repaint();
-    }
+    } 
 
 }

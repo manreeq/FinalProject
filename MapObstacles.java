@@ -1,4 +1,5 @@
 import java.awt.*;
+import javax.sound.sampled.Line;
 
 public class MapObstacles {
     
@@ -34,7 +35,14 @@ public class MapObstacles {
 
         LineWall l6 = new LineWall(700, 600, 860, 400, 10, color);
         l6.draw(g2d);
-   
+        LineWall l7 = new LineWall(500, 100, 800, 100, 10, color);
+        l7.draw(g2d);
+
+        RectangleWall r1 = new RectangleWall(300, 600, 100, 100, color);
+        r1.draw(g2d);
+        RectangleWall r2 = new RectangleWall(730, 200, 100, 100, color);
+        r2.draw(g2d);
+
     }
 
 }

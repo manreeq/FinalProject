@@ -6,9 +6,9 @@ public class Player implements GameEntity{
 
     private double radius, x, y;
     private Color color;
-    private int hspeed, vspeed;
+    private double hspeed, vspeed;
 
-    public Player (double x, double y, double radius, Color color, int hspeed, int vspeed) {
+    public Player (double x, double y, double radius, Color color, double hspeed, double vspeed) {
         this.x = x;
         this.y = y;
         this.radius = radius;
@@ -21,6 +21,27 @@ public class Player implements GameEntity{
         Ellipse2D.Double sq = new Ellipse2D.Double(x, y, radius, radius);
         g2d.setColor(color);
         g2d.fill(sq);
+    }
+
+    public void tick() {
+        x += hspeed;
+        y += vspeed;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setHSpeed(double hspeed) {
+        this.hspeed = hspeed;
+    }
+
+    public void setVSpeed(double vspeed) {
+        this.vspeed = vspeed;
     }
 
     public void moveRight() {
