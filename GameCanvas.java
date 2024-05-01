@@ -27,10 +27,14 @@ public class GameCanvas extends JComponent{
             
             @Override
             public void actionPerformed(ActionEvent ae) {
-                //stuff
+                player.tick();
+                repaint();
             }
 
         };
+
+        timer = new Timer(delay, timerListener);
+        timer.start();
 
     }
 
@@ -46,23 +50,31 @@ public class GameCanvas extends JComponent{
 
     
     public void movePlayerUp(){
-        player.moveUp();
+        player.setVSpeed(-5);
         repaint();
     }
 
     public void movePlayerDown(){
-        player.moveDown();
+        player.setVSpeed(5);;
         repaint();
     }
 
     public void movePlayerLeft(){
-        player.moveLeft();
+        player.setHSpeed(-5);;
         repaint();
     }
 
     public void movePlayerRight(){
-        player.moveRight();
+        player.setHSpeed(5);;
         repaint();
     } 
+
+    public void stopMovingY(){
+        player.setVSpeed(0);
+    }
+
+    public void stopMovingX(){
+        player.setHSpeed(0);
+    }
 
 }

@@ -44,6 +44,7 @@ public class Player implements GameEntity{
         this.vspeed = vspeed;
     }
 
+    /** 
     public void moveRight() {
         this.x += hspeed;
     }
@@ -60,6 +61,7 @@ public class Player implements GameEntity{
         this.y += vspeed;
     }
 
+    
     public void changeHSpeed(int speedChange){
         hspeed += speedChange;
     }
@@ -67,5 +69,6 @@ public class Player implements GameEntity{
     public void changeVSpeed (int speedChange) {
         vspeed += speedChange;
     }
+    */
 
 }

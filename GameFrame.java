@@ -44,6 +44,7 @@ public class GameFrame {
         AbstractAction moveDown = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
                 canvas.movePlayerDown();
+                System.out.println("down lmao");
             }
         };
 
@@ -59,15 +60,38 @@ public class GameFrame {
             }
         };
 
+        AbstractAction stopY = new AbstractAction() {
+            public void actionPerformed(ActionEvent ae) {
+                canvas.stopMovingY();
+            }
+        };
+
+        AbstractAction stopX = new AbstractAction() {
+            public void actionPerformed(ActionEvent ae) {
+                canvas.stopMovingX();
+            }
+        };
+
+
         am.put("up", moveUp);
         am.put("down", moveDown);
         am.put("left", moveLeft);
         am.put("right", moveRight);
 
-        im.put(KeyStroke.getKeyStroke(87, 0, true), "up");
-        im.put(KeyStroke.getKeyStroke(83, 0, true), "down");
-        im.put(KeyStroke.getKeyStroke(65, 0, true), "left");
-        im.put(KeyStroke.getKeyStroke(68, 0, true), "right");
+        am.put("upEnd", stopY);
+        am.put("downEnd", stopY);
+        am.put("leftEnd", stopX);
+        am.put("rightEnd", stopX);
+
+        im.put(KeyStroke.getKeyStroke(87, 0), "up");
+        im.put(KeyStroke.getKeyStroke(83, 0), "down");
+        im.put(KeyStroke.getKeyStroke(65, 0), "left");
+        im.put(KeyStroke.getKeyStroke(68, 0), "right");
+
+        im.put(KeyStroke.getKeyStroke(87, 0, true), "upEnd");
+        im.put(KeyStroke.getKeyStroke(83, 0, true), "downEnd");
+        im.put(KeyStroke.getKeyStroke(65, 0, true), "leftEnd");
+        im.put(KeyStroke.getKeyStroke(68, 0, true), "rightEnd");
     }
 
 }
