@@ -18,7 +18,7 @@ public class MapObstacles {
         RectangleWall bWest = new RectangleWall(-35, -0, 40, 800, color);
         bWest.draw(g2d);
 
-        CircleWall test = new CircleWall(450, 350, 100, Color.BLUE); test.draw(g2d);
+        
     }
 
 }
