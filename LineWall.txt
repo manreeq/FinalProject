@@ -30,7 +30,7 @@ public class LineWall implements WallsInterface {
     }
 
     // accessor methods:
-    public double getXS() {
+    public double getX() {
         return xs;
     }
     public double getYS() {

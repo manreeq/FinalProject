@@ -4,28 +4,59 @@ import java.awt.geom.*;
 public class Player implements PlayerEntity{
     // appearance and functionality of player
 
-    private double diameter, x, y;
+    private double side, x, y;
     private Color color;
     private double hspeed, vspeed;
 
-    public Player (double x, double y, double diameter, Color color, double hspeed, double vspeed) {
+    public Player (double x, double y, double side, Color color, double hspeed, double vspeed) {
         this.x = x;
         this.y = y;
-        this.diameter = diameter;
+        this.side = side;
         this.color = color;
         this.hspeed = hspeed;
         this.vspeed = vspeed;
     }
     
     public void draw(Graphics2D g2d) {
-        Ellipse2D.Double sq = new Ellipse2D.Double(x, y, diameter, diameter);
+        Rectangle2D.Double sq = new Rectangle2D.Double(x, y, side, side);
         g2d.setColor(color);
         g2d.fill(sq);
     }
 
 
-    public boolean collideWall(WallsInterface w) {
+    public String collideWall(Wall w) {
+        if (!(x + side <= w.getX() ||
+        x >= w.getX() + w.getWidth() ||
+        y >= w.getY() + w.getHeight() ||
+        y + side <= w.getY())) {
         
+            if (x + side > w.getX() && x < w.getX()) {
+                System.out.println("right");
+                return "right";
+            }
+            else if (x < w.getX() + w.getWidth() && x + side > w.getX() + w.getWidth()) {
+                System.out.println("left");
+                return "left";
+            }
+            else if (y + side > w.getY() && y < w.getY()) {
+                System.out.println("up");
+                return "up";
+            }
+            else if (y < w.getY() + w.getHeight() && y + side > w.getY() + w.getHeight()) {
+                System.out.println("down");
+                return "down";
+            }
+
+            else return null;
+        } else return null;
+    }
+
+    public boolean collidePlayer(Player p) {
+        return false;
+    }
+    
+    public boolean collidePowerUp(PowerUp pu) {
+        return false;
     }
 
 
@@ -54,9 +85,8 @@ public class Player implements PlayerEntity{
     public double getY() {
         return y;
     }
-    public double getDiameter() {
-        return diameter;
+    public double getSide() {
+        return side;
     }
-
 
 }

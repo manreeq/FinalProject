@@ -1,12 +1,12 @@
 import java.awt.*;
 import java.awt.geom.*;
 
-public class RectangleWall implements WallsInterface {
+public class Wall {
     
     private double x, y, width, height;
     private Color color;
 
-    public RectangleWall (double x, double y, double width, double height, Color color) {
+    public Wall (double x, double y, double width, double height, Color color) {
         this.x = x;
         this.y = y;
         this.width = width;

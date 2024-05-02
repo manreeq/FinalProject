@@ -4,7 +4,7 @@ public interface PlayerEntity {
     
     abstract void draw(Graphics2D g2d);
 
-    abstract boolean collideWall(WallsInterface w);
+    abstract String collideWall(Wall w);
 
     abstract boolean collidePlayer(Player p);
 

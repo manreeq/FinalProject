@@ -7,25 +7,28 @@ import java.util.*;
 public class GameCanvas extends JComponent{
     
     //private ArrayList<GameEntity> entities;
-    private ArrayList<WallsInterface> walls;
-    private Player player;
+    private ArrayList<Wall> walls;
+    private Player p1;
+    private Player p2;
+    //private Player[] players;
+
     private Timer timer;
     private int delay;
     private Color wc;
     
-    private RectangleWall bNorth;
-    private RectangleWall bSouth;
-    private RectangleWall bEast;
-    private RectangleWall bWest;
-    private RectangleWall r1;
-    private RectangleWall r2;
-    private LineWall l1;
-    private LineWall l2;
-    private LineWall l3;
-    private LineWall l4;
-    private LineWall l5;
-    private LineWall l6;
-    private LineWall l7;
+    private Wall bNorth;
+    private Wall bSouth;
+    private Wall bEast;
+    private Wall bWest;
+    private Wall r1;
+    private Wall r2;
+    private Wall l1;
+    private Wall l2;
+    private Wall l3;
+    private Wall l4;
+    private Wall l5;
+    private Wall l6;
+    private Wall l7;
 
     public GameCanvas() {
         this.setPreferredSize(new Dimension(1000, 800));
@@ -35,46 +38,53 @@ public class GameCanvas extends JComponent{
         //entities = new ArrayList<>();
 
         //border walls
-        bNorth = new RectangleWall(0, -30, 1000, 40, wc);
+        bNorth = new Wall(0, -30, 1000, 40, wc);
         walls.add(bNorth);
-        bSouth = new RectangleWall(0, 755, 1000, 40, wc);
+        bSouth = new Wall(0, 755, 1000, 40, wc);
         walls.add(bSouth);
-        bEast = new RectangleWall(980, 0, 40, 800, wc);
+        bEast = new Wall(980, 0, 40, 800, wc);
         walls.add(bEast);
-        bWest = new RectangleWall(-35, -0, 40, 800, wc);
+        bWest = new Wall(-35, -0, 40, 800, wc);
         walls.add(bWest);
 
         //obstacles
-        l1 = new LineWall(150, 250, 150, 380, 10, wc);
+        l1 = new Wall(150, 250, 130, 10, wc);
         walls.add(l1);
-        l2 = new LineWall(150, 460, 150, 580, 10, wc);
+        l2 = new Wall(150, 460, 120, 10, wc);
         walls.add(l2);
         
-        l3 = new LineWall(383, 260, 383, 470, 10, wc);
+        l3 = new Wall(383, 260, 10, 210, wc);
         walls.add(l3);
-        l4 = new LineWall(617, 260, 617, 470, 10, wc);
+        l4 = new Wall(617, 260, 10, 210, wc);
         walls.add(l4);
-        l5 = new LineWall(470, 365, 520, 365, 10, wc);
+        l5 = new Wall(470, 365, 10, 50, wc);
         walls.add(l5);
 
-        l6 = new LineWall(700, 600, 860, 400, 10, wc);
+        l6 = new Wall(550, 580, 250, 10, wc);
         walls.add(l6);
-        l7 = new LineWall(500, 100, 800, 100, 10, wc);
+        l7 = new Wall(500, 100, 300, 10, wc);
         walls.add(l7);
 
-        r1 = new RectangleWall(300, 600, 100, 100, wc);
+        r1 = new Wall(300, 600, 100, 100, wc);
         walls.add(r1);
-        r2 = new RectangleWall(730, 200, 100, 100, wc);
+        r2 = new Wall(730, 200, 100, 100, wc);
         walls.add(r2);
 
-        player = new Player(75, 75, 30, Color.BLUE, 0, 0);
+        p1 = new Player(75, 75, 30, Color.BLUE, 0, 0);
+        p2 = new Player(75, 75, 30, Color.RED, 0, 0);
 
 
         ActionListener timerListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                player.tick();
-                for (WallsInterface w: walls) w.isColliding(player);
+                
+                for (Wall w: walls) {
+                    p1.collideWall(w);
+                }
+                
+                p1.tick();
+                p2.tick();
+                
                 repaint();
             }
         };
@@ -90,38 +100,38 @@ public class GameCanvas extends JComponent{
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
 
-        for (WallsInterface w: walls) w.draw(g2d);
+        for (Wall w: walls) w.draw(g2d);
 
-        player.draw(g2d);
+        p1.draw(g2d);
     }
 
     
     public void movePlayerUp(){
-        player.setVSpeed(-5);
+        p1.setVSpeed(-5);
         repaint();
     }
 
     public void movePlayerDown(){
-        player.setVSpeed(5);;
+        p1.setVSpeed(5);;
         repaint();
     }
 
     public void movePlayerLeft(){
-        player.setHSpeed(-5);;
+        p1.setHSpeed(-5);;
         repaint();
     }
 
     public void movePlayerRight(){
-        player.setHSpeed(5);;
+        p1.setHSpeed(5);;
         repaint();
     } 
 
     public void stopMovingY(){
-        player.setVSpeed(0);
+        p1.setVSpeed(0);
     }
 
     public void stopMovingX(){
-        player.setHSpeed(0);
+        p1.setHSpeed(0);
     }
 
 }
