@@ -36,14 +36,12 @@ public class GameFrame {
         AbstractAction moveUp = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
                 canvas.movePlayerUp();
-                System.out.println("moved up lfg");
             }
         };
 
         AbstractAction moveDown = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
                 canvas.movePlayerDown();
-                System.out.println("down lmao");
             }
         };
 

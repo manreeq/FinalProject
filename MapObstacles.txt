@@ -1,18 +1,21 @@
 import java.awt.*;
-import javax.sound.sampled.Line;
+import java.util.*;
 
 public class MapObstacles {
     
     private Color color;
+    private ArrayList<WallsInterface> walls;
     
     public MapObstacles(Color color) {
         this.color = color;
     }
 
+    
     public void draw(Graphics2D g2d) {
         //border walls
         RectangleWall bNorth = new RectangleWall(0, -30, 1000, 40, color);
-        bNorth.draw(g2d);
+        //bNorth.draw(g2d);
+        walls.add(bNorth);
         RectangleWall bSouth = new RectangleWall(0, 755, 1000, 40, color);
         bSouth.draw(g2d);
         RectangleWall bEast = new RectangleWall(980, 0, 40, 800, color);
@@ -44,5 +47,41 @@ public class MapObstacles {
         r2.draw(g2d);
 
     }
+
+    /* 
+    public void draw(Graphics2D g2d) {
+        System.out.println("tite");
+        
+        //border walls
+        walls.add(new RectangleWall(0, -30, 1000, 40, color));
+        walls.add(new RectangleWall(0, 755, 1000, 40, color));
+        walls.add(new RectangleWall(980, 0, 40, 800, color));
+        walls.add(new RectangleWall(-35, -0, 40, 800, color));
+
+        //obstacles
+        walls.add(new LineWall(150, 250, 150, 380, 10, color));
+        walls.add(new LineWall(150, 460, 150, 580, 10, color));
+        
+        walls.add(new LineWall(383, 260, 383, 470, 10, color));
+        walls.add(new LineWall(617, 260, 617, 470, 10, color));
+        walls.add(new LineWall(470, 365, 520, 365, 10, color));
+
+        walls.add(new LineWall(700, 600, 860, 400, 10, color));
+        walls.add(new LineWall(500, 100, 800, 100, 10, color));
+
+        walls.add(new RectangleWall(300, 600, 100, 100, color));
+        walls.add(new RectangleWall(730, 200, 100, 100, color));
+
+
+        for (WallsInterface w: walls) {
+            System.out.println("tite");
+            w.draw(g2d);
+        } 
+
+        System.out.println("tite");
+
+    } */
+
+
 
 }

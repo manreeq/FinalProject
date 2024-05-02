@@ -25,4 +25,25 @@ public class LineWall implements WallsInterface {
         g2d.draw(l);
     }
 
+    public boolean isColliding(Player p) {
+        return true;
+    }
+
+    // accessor methods:
+    public double getXS() {
+        return xs;
+    }
+    public double getYS() {
+        return ys;
+    }
+    public double getXE() {
+        return xe;
+    }
+    public double getYE() {
+        return ye;
+    }
+    public double getThickness() {
+        return thickness;
+    }
+
 }
