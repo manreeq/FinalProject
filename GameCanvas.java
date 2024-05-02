@@ -29,10 +29,11 @@ public class GameCanvas extends JComponent{
     private Wall l5;
     private Wall l6;
     private Wall l7;
-    private String p1Collw;
-    private String p2Collw;
+    private int p1Speed;
+
 
     public GameCanvas() {
+        p1Speed = 5;
         this.setPreferredSize(new Dimension(1000, 800));
         delay = 20;
         wc = Color.BLACK;
@@ -79,18 +80,7 @@ public class GameCanvas extends JComponent{
         ActionListener timerListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                
-                /*
-                for (Wall w: walls) {
-                    if (p1.collideWall(w)) {
-                        if (p1.DownC(w)) p1Collw = "down";
-                        if (p1.UpC(w)) p1Collw = "up";
-                        if (p1.LeftC(w)) p1Collw = "left";
-                        if (p1.RightC(w)) p1Collw = "right";
-                    } else p1Collw = null;
-                }
 
-                System.out.println(p1Collw); */
 
                 System.out.println(wallCollision(p1));
                 p1.tick();
@@ -138,23 +128,23 @@ public class GameCanvas extends JComponent{
     
     public void movePlayerUp(){
         if (!(wallCollision(p1) == "up")) {
-            p1.setVSpeed(-5);
+            p1.setVSpeed(-p1Speed);
             repaint();
         } else p1.setHSpeed(0);
     }
 
     public void movePlayerDown(){
-        p1.setVSpeed(5);;
+        p1.setVSpeed(p1Speed);;
         repaint();
     }
 
     public void movePlayerLeft(){
-        p1.setHSpeed(-5);;
+        p1.setHSpeed(-p1Speed);;
         repaint();
     }
 
     public void movePlayerRight(){
-        p1.setHSpeed(5);;
+        p1.setHSpeed(p1Speed);;
         repaint();
     } 
 
