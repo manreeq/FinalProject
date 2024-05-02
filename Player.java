@@ -23,12 +23,40 @@ public class Player implements PlayerEntity{
         g2d.fill(sq);
     }
 
+    // what wall
+    public boolean RightC(Wall w) {
+        if (x + side > w.getX() && x < w.getX()) {
+            System.out.println("right");
+            return true;
+        } else return false;
+    }
+    public boolean LeftC(Wall w) {
+        if (x < w.getX() + w.getWidth() && x + side > w.getX() + w.getWidth()) {
+            System.out.println("left");
+            return true;
+        } else return false;
+    }
+    public boolean DownC(Wall w) {
+        if (y + side > w.getY() && y < w.getY()) {
+            System.out.println("down");
+            return true;
+        } else return false;
+    }
+    public boolean UpC(Wall w) {
+        if (y < w.getY() + w.getHeight() && y + side > w.getY() + w.getHeight()) {
+            System.out.println("up");
+            return true;
+        } else return false;
+    }
 
-    public String collideWall(Wall w) {
-        if (!(x + side <= w.getX() ||
+    //collision
+    public boolean collideWall(Wall w) {
+        return (!(x + side <= w.getX() ||
         x >= w.getX() + w.getWidth() ||
         y >= w.getY() + w.getHeight() ||
-        y + side <= w.getY())) {
+        y + side <= w.getY()));
+        
+        /* 
         
             if (x + side > w.getX() && x < w.getX()) {
                 System.out.println("right");
@@ -39,16 +67,16 @@ public class Player implements PlayerEntity{
                 return "left";
             }
             else if (y + side > w.getY() && y < w.getY()) {
-                System.out.println("up");
-                return "up";
-            }
-            else if (y < w.getY() + w.getHeight() && y + side > w.getY() + w.getHeight()) {
                 System.out.println("down");
                 return "down";
             }
-
-            else return null;
-        } else return null;
+            else if (y < w.getY() + w.getHeight() && y + side > w.getY() + w.getHeight()) {
+                System.out.println("up");
+                return "up";
+            }
+            return null;
+        } 
+        return null;*/
     }
 
     public boolean collidePlayer(Player p) {

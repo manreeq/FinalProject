@@ -29,6 +29,8 @@ public class GameCanvas extends JComponent{
     private Wall l5;
     private Wall l6;
     private Wall l7;
+    private String p1Collw;
+    private String p2Collw;
 
     public GameCanvas() {
         this.setPreferredSize(new Dimension(1000, 800));
@@ -78,10 +80,19 @@ public class GameCanvas extends JComponent{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 
+                /*
                 for (Wall w: walls) {
-                    p1.collideWall(w);
+                    if (p1.collideWall(w)) {
+                        if (p1.DownC(w)) p1Collw = "down";
+                        if (p1.UpC(w)) p1Collw = "up";
+                        if (p1.LeftC(w)) p1Collw = "left";
+                        if (p1.RightC(w)) p1Collw = "right";
+                    } else p1Collw = null;
                 }
-                
+
+                System.out.println(p1Collw); */
+
+                System.out.println(wallCollision(p1));
                 p1.tick();
                 p2.tick();
                 
@@ -93,6 +104,25 @@ public class GameCanvas extends JComponent{
         timer.start();
     }
 
+    public String wallCollision(Player p) {
+        boolean tempB = false;
+        Wall tempW = null;
+        for (Wall w: walls) {
+            if (p.collideWall(w)) {
+                tempB = true;
+                tempW = w;
+                break;
+            } else tempB = false;
+        }
+
+        if (tempB) {
+            if (p1.DownC(tempW)) return "down";
+            if (p1.UpC(tempW)) return "up";
+            if (p1.LeftC(tempW)) return "left";
+            if (p1.RightC(tempW)) return "right";
+        } return null;
+
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -107,8 +137,10 @@ public class GameCanvas extends JComponent{
 
     
     public void movePlayerUp(){
-        p1.setVSpeed(-5);
-        repaint();
+        if (!(wallCollision(p1) == "up")) {
+            p1.setVSpeed(-5);
+            repaint();
+        } else p1.setHSpeed(0);
     }
 
     public void movePlayerDown(){
@@ -132,6 +164,10 @@ public class GameCanvas extends JComponent{
 
     public void stopMovingX(){
         p1.setHSpeed(0);
+    }
+
+    public Player getPlayer1() {
+        return p1;
     }
 
 }
