@@ -106,10 +106,10 @@ public class GameCanvas extends JComponent{
         }
 
         if (tempB) {
-            if (p1.DownC(tempW)) return "down";
-            if (p1.UpC(tempW)) return "up";
             if (p1.LeftC(tempW)) return "left";
             if (p1.RightC(tempW)) return "right";
+            if (p1.DownC(tempW)) return "down";
+            if (p1.UpC(tempW)) return "up";
         } return null;
 
     }
@@ -130,22 +130,28 @@ public class GameCanvas extends JComponent{
         if (!(wallCollision(p1) == "up")) {
             p1.setVSpeed(-p1Speed);
             repaint();
-        } else p1.setHSpeed(0);
+        } else p1.setVSpeed(0);
     }
 
     public void movePlayerDown(){
-        p1.setVSpeed(p1Speed);;
-        repaint();
+        if (!(wallCollision(p1) == "down")) {
+            p1.setVSpeed(p1Speed);
+            repaint();
+        } else p1.setVSpeed(0);
     }
 
     public void movePlayerLeft(){
-        p1.setHSpeed(-p1Speed);;
-        repaint();
+        if (!(wallCollision(p1) == "left")) {
+            p1.setHSpeed(-p1Speed);
+            repaint();
+        } else p1.setHSpeed(0);
     }
 
     public void movePlayerRight(){
-        p1.setHSpeed(p1Speed);;
-        repaint();
+        if (!(wallCollision(p1) == "right")) {
+            p1.setHSpeed(p1Speed);
+            repaint();
+        } else p1.setHSpeed(0);
     } 
 
     public void stopMovingY(){
