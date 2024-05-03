@@ -4,11 +4,11 @@ import java.awt.geom.*;
 public class Player extends PlayerEntity{
     // appearance and functionality of player
 
-    private double side, x, y;
+    private int side, x, y;
     private Color color;
-    private double hspeed, vspeed;
+    private int hspeed, vspeed;
 
-    public Player (double x, double y, double side, Color color, double hspeed, double vspeed) {
+    public Player (int x, int y, int side, Color color, int hspeed, int vspeed) {
         this.x = x;
         this.y = y;
         this.side = side;
@@ -73,28 +73,34 @@ public class Player extends PlayerEntity{
         //System.out.println("tite");
         
     }
-    public void setX(double x) {
+    public void setX(int x) {
         this.x = x;
     }
-    public void setY(double y) {
+    public void setY(int y) {
         this.y = y;
     }
-    public void setHSpeed(double hspeed) {
+    public void setHSpeed(int hspeed) {
         this.hspeed = hspeed;
     }
-    public void setVSpeed(double vspeed) {
+    public void setVSpeed(int vspeed) {
         this.vspeed = vspeed;
     }
 
     // accessor methods:
-    public double getX() {
+    public int getX() {
         return x;
     }
-    public double getY() {
+    public int getY() {
         return y;
     }
-    public double getSide() {
+    public int getSide() {
         return side;
+    }
+    public int getXSpeed() {
+        return hspeed;
+    }
+    public int getYSpeed() {
+        return vspeed;
     }
 
 }

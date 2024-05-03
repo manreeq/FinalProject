@@ -103,13 +103,13 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     // y-axis movement
-                    if (wPressed) movePlayerUp();
-                    if (sPressed) movePlayerDown();
+                    if ((sPressed) && (!wPressed)) {movePlayerDown(); System.out.println("down");}
+                    if ((wPressed) && (!sPressed)) {movePlayerUp(); System.out.println("up");}
                     if (!(wPressed || sPressed)) stopMovingY();
 
                     // x-axis movement
-                    if (aPressed) movePlayerLeft();
-                    if (dPressed) movePlayerRight();
+                    if ((dPressed) && (!aPressed)) {movePlayerRight(); System.out.println("right");}
+                    if ((aPressed) && (!dPressed)) {movePlayerLeft(); System.out.println("left");}
                     if (!(aPressed || dPressed)) stopMovingX();
                     
                     
@@ -140,8 +140,8 @@ public class GameCanvas extends JComponent {
         }
 
         if (tempB) {
-            if (p1.LeftC(tempW)) return "left";
             if (p1.RightC(tempW)) return "right";
+            if (p1.LeftC(tempW)) return "left";
             if (p1.DownC(tempW)) return "down";
             if (p1.UpC(tempW)) return "up";
         } return null;
@@ -204,11 +204,23 @@ public class GameCanvas extends JComponent {
     public void stopMovingY(){ 
         p1.setVSpeed(0);
     }
-    
-
     public void stopMovingX(){
         p1.setHSpeed(0);
     }
+
+    /*
+    public void stopMovingUp() {
+        if (p1.getYSpeed() < 0) p1.setVSpeed(0);
+    }
+    public void stopMovingDown() {
+        if (p1.getYSpeed() > 0) p1.setVSpeed(0);
+    }
+    public void stopMovingLeft() {
+        if (p1.getXSpeed() < 0) p1.setHSpeed(0);
+    }
+    public void stopMovingRight() {
+        if (p1.getXSpeed() > 0) p1.setHSpeed(0);
+    } */
 
 
     public Player getPlayer1() {
