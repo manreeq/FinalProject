@@ -4,7 +4,7 @@ import javax.swing.Timer;
 import java.awt.event.*;
 import java.util.*;
 
-public class GameCanvas extends JComponent{
+public class GameCanvas extends JComponent {
     
     //private ArrayList<GameEntity> entities;
     private ArrayList<Wall> walls;
@@ -33,9 +33,9 @@ public class GameCanvas extends JComponent{
 
 
     public GameCanvas() {
-        p1Speed = 5;
+        p1Speed = 1;
         this.setPreferredSize(new Dimension(1000, 800));
-        delay = 20;
+        delay = 5;
         wc = Color.BLACK;
         walls = new ArrayList<>();
         //entities = new ArrayList<>();
@@ -82,7 +82,7 @@ public class GameCanvas extends JComponent{
             public void actionPerformed(ActionEvent ae) {
 
 
-                System.out.println(wallCollision(p1));
+                //System.out.println(wallCollision(p1));
                 p1.tick();
                 p2.tick();
                 
@@ -154,7 +154,7 @@ public class GameCanvas extends JComponent{
         } else p1.setHSpeed(0);
     } 
 
-    public void stopMovingY(){
+    public void stopMovingY(){ 
         p1.setVSpeed(0);
     }
 
