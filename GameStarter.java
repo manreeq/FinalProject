@@ -4,6 +4,7 @@ public class GameStarter {
         GameFrame gf = new GameFrame();
         gf.setUpGUI();
         gf.addKeyBindings();
+
     }
     
 }

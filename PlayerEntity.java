@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public interface PlayerEntity {
+public abstract class PlayerEntity {
     
     abstract void draw(Graphics2D g2d);
 

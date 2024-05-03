@@ -1,4 +1,4 @@
-    import java.awt.*;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -56,7 +56,8 @@ public class GameFrame {
 
                 upTrue = 1;
                 amtKeysY = upTrue + downTrue;
-                canvas.movePlayerUp();
+                //canvas.movePlayerUp();
+                canvas.wPressed(true);
                 System.out.println(amtKeysY);
 
             }
@@ -75,7 +76,8 @@ public class GameFrame {
 
                 downTrue = 1;
                 amtKeysY = upTrue + downTrue;
-                canvas.movePlayerDown();
+                //canvas.movePlayerDown();
+                canvas.sPressed(true);
                 System.out.println(amtKeysY);
             }
         };
@@ -93,7 +95,8 @@ public class GameFrame {
 
                 rightTrue = 1;
                 amtKeysX = leftTrue + rightTrue;
-                canvas.movePlayerRight();
+                //canvas.movePlayerRight();
+                canvas.dPressed(true);
                 System.out.println(amtKeysX);
             }
         };
@@ -111,7 +114,8 @@ public class GameFrame {
 
                 leftTrue = 1;
                 amtKeysX = leftTrue + rightTrue;
-                canvas.movePlayerLeft();
+                //canvas.movePlayerLeft();
+                canvas.aPressed(true);
                 System.out.println(amtKeysX);
             }
         };
@@ -131,8 +135,8 @@ public class GameFrame {
 
                 upTrue = 0;
                 amtKeysY -= 1;
-                if (amtKeysY == 0) {
-                canvas.stopMovingY();}
+                if (amtKeysY == 0) 
+                canvas.wPressed(false);
                 System.out.println(amtKeysY);
 
             }
@@ -153,8 +157,9 @@ public class GameFrame {
 
                 downTrue = 0;
                 amtKeysY -= 1;
-                if (amtKeysY == 0) {
-                canvas.stopMovingY();}
+                if (amtKeysY == 0) 
+                //canvas.stopMovingY();
+                canvas.sPressed(false);
                 System.out.println(amtKeysY);
             }
         };
@@ -174,8 +179,9 @@ public class GameFrame {
 
                 leftTrue = 0;
                 amtKeysX -= 1;
-                if (amtKeysX == 0) {
-                canvas.stopMovingX();}
+                if (amtKeysX == 0) 
+                //canvas.stopMovingX();
+                canvas.aPressed(false);
                 System.out.println(amtKeysX);
             }
         };
@@ -195,8 +201,9 @@ public class GameFrame {
 
                 rightTrue = 0;
                 amtKeysX -= 1;
-                if (amtKeysX == 0) {
-                canvas.stopMovingX();}
+                if (amtKeysX == 0) 
+                //canvas.stopMovingX();
+                canvas.dPressed(false);
                 System.out.println(amtKeysX);
             }
         };

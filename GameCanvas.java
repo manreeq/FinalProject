@@ -1,18 +1,16 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.event.*;
 import java.util.*;
 
 public class GameCanvas extends JComponent {
     
-    //private ArrayList<GameEntity> entities;
     private ArrayList<Wall> walls;
     private Player p1;
     private Player p2;
     //private Player[] players;
 
-    private Timer timer;
+    //private Timer timer;
     private int delay;
     private Color wc;
     
@@ -30,6 +28,8 @@ public class GameCanvas extends JComponent {
     private Wall l6;
     private Wall l7;
     private int p1Speed;
+
+    private boolean wPressed, aPressed, sPressed, dPressed;
 
 
     public GameCanvas() {
@@ -76,7 +76,7 @@ public class GameCanvas extends JComponent {
         p1 = new Player(75, 75, 30, Color.BLUE, 0, 0);
         p2 = new Player(75, 75, 30, Color.RED, 0, 0);
 
-
+        /*
         ActionListener timerListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -88,10 +88,44 @@ public class GameCanvas extends JComponent {
                 
                 repaint();
             }
-        };
+        }; */
 
-        timer = new Timer(delay, timerListener);
-        timer.start();
+        //timer = new Timer(delay, timerListener);
+        //timer.start();
+
+        Thread t = new MyThread();
+        t.start();
+
+    }
+
+    private class MyThread extends Thread {
+        public void run() {
+            try {
+                while (true) {
+                    // y-axis movement
+                    if (wPressed) movePlayerUp();
+                    if (sPressed) movePlayerDown();
+                    if (!(wPressed || sPressed)) stopMovingY();
+
+                    // x-axis movement
+                    if (aPressed) movePlayerLeft();
+                    if (dPressed) movePlayerRight();
+                    if (!(aPressed || dPressed)) stopMovingX();
+                    
+                    
+
+                    p1.tick();
+                    p2.tick();
+                    repaint();
+                    Thread.sleep(5);
+                }   
+            } catch(InterruptedException e) {
+                
+            }
+            
+        }
+
+        
     }
 
     public String wallCollision(Player p) {
@@ -154,13 +188,28 @@ public class GameCanvas extends JComponent {
         } else p1.setHSpeed(0);
     } 
 
+    public void wPressed(boolean b) {
+        wPressed = b;
+    }
+    public void aPressed(boolean b) {
+        aPressed = b;
+    }
+    public void sPressed(boolean b) {
+        sPressed = b;
+    }
+    public void dPressed(boolean b) {
+        dPressed = b;
+    }
+
     public void stopMovingY(){ 
         p1.setVSpeed(0);
     }
+    
 
     public void stopMovingX(){
         p1.setHSpeed(0);
     }
+
 
     public Player getPlayer1() {
         return p1;
