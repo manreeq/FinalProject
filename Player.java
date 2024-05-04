@@ -26,25 +26,21 @@ public class Player extends PlayerEntity{
     // what wall
     public boolean RightC(Wall w) {
         if (x + side >= w.getX() && x < w.getX() && getY() + getSide() - 1 > w.getY() && getY() + 1 < w.getY() + w.getHeight()) {
-            System.out.println("right");
             return true;
         } else return false;
     }
     public boolean LeftC(Wall w) {
         if (x <= w.getX() + w.getWidth() && x + side > w.getX() + w.getWidth() && getY() + getSide() - 1 > w.getY() && getY() + 1 < w.getY() + w.getHeight()) {
-            System.out.println("left");
             return true;
         } else return false;
     }
     public boolean DownC(Wall w) {
         if (y + side >= w.getY() && y < w.getY()) {
-            System.out.println("down");
             return true;
         } else return false;
     }
     public boolean UpC(Wall w) {
         if (y <= w.getY() + w.getHeight() && y + side > w.getY() + w.getHeight()) {
-            System.out.println("up");
             return true;
         } else return false;
     }
