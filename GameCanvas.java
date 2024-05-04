@@ -103,13 +103,13 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     // y-axis movement
-                    if ((sPressed) && (!wPressed)) {movePlayerDown(); System.out.println("down");}
-                    if ((wPressed) && (!sPressed)) {movePlayerUp(); System.out.println("up");}
+                    if ((sPressed) && (!wPressed)) movePlayerDown();
+                    if ((wPressed) && (!sPressed)) movePlayerUp(); 
                     if (!(wPressed || sPressed)) stopMovingY();
 
                     // x-axis movement
-                    if ((dPressed) && (!aPressed)) {movePlayerRight(); System.out.println("right");}
-                    if ((aPressed) && (!dPressed)) {movePlayerLeft(); System.out.println("left");}
+                    if ((dPressed) && (!aPressed)) movePlayerRight();
+                    if ((aPressed) && (!dPressed)) movePlayerLeft();
                     if (!(aPressed || dPressed)) stopMovingX();
                     
                     
@@ -140,10 +140,11 @@ public class GameCanvas extends JComponent {
         }
 
         if (tempB) {
-            if (p1.RightC(tempW)) return "right";
-            if (p1.LeftC(tempW)) return "left";
-            if (p1.DownC(tempW)) return "down";
-            if (p1.UpC(tempW)) return "up";
+            if (p.RightC(tempW)) return "right";
+            if (p.LeftC(tempW) && p.getY() + p.getSide() > tempW.getY()) return "left";
+            if (p.DownC(tempW)) return "down";
+            if (p.UpC(tempW)) return "up";
+
         } return null;
 
     }

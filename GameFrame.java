@@ -64,73 +64,39 @@ public class GameFrame {
 
         AbstractAction moveDown = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
-                /*
-                if (keyCounter == 0) keyCounter = 1;
-                else if (keyCounter == 1) keyCounter = 2;
-
-                if (keyCounter > 0) {
-                    canvas.movePlayerDown();
-                }
-                System.out.println(keyCounter); */
 
                 downTrue = 1;
                 amtKeysY = upTrue + downTrue;
                 //canvas.movePlayerDown();
                 canvas.sPressed(true);
-                System.out.println("down");
+                //System.out.println("down");
             }
         };
 
         AbstractAction moveRight = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
-                /*
-                if (keyCounter == 0) keyCounter = 1;
-                else if (keyCounter == 1) keyCounter = 2;
-
-                if (keyCounter > 0) {
-                    canvas.movePlayerRight();
-                }
-                System.out.println(keyCounter); */
 
                 rightTrue = 1;
                 amtKeysX = leftTrue + rightTrue;
                 //canvas.movePlayerRight();
                 canvas.dPressed(true);
-                System.out.println("right");
+                //System.out.println("right");
             }
         };
 
         AbstractAction moveLeft = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
-                /*
-                if (keyCounter == 0) keyCounter = 1;
-                else if (keyCounter == 1) keyCounter = 2;
-                
-                if (keyCounter > 0) {
-                    canvas.movePlayerLeft();
-                }
-                System.out.println(keyCounter); */
 
                 leftTrue = 1;
                 amtKeysX = leftTrue + rightTrue;
                 //canvas.movePlayerLeft();
                 canvas.aPressed(true);
-                System.out.println("left");
+                //System.out.println("left");
             }
         };
 
         AbstractAction stopUp = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
-                /*
-                keyCounter -= 1;
-                if (keyCounter == 0){
-                    canvas.stopMovingY();
-                    System.out.println(keyCounter);
-                }
-                else {
-                    //keyCounter = 0;
-                    System.out.println(keyCounter);
-                } */
 
                 upTrue = 0;
                 amtKeysY = 0;
@@ -142,17 +108,6 @@ public class GameFrame {
 
         AbstractAction stopDown = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
-                /*
-                keyCounter -= 1;
-                if (keyCounter == 0){
-                    canvas.stopMovingY();
-                    System.out.println(keyCounter);
-                }
-                else {
-                    //keyPressedY = false;
-                    System.out.println(keyCounter);
-                } */
-
                 downTrue = 0;
                 amtKeysY = 0;
                 if (amtKeysY == 0) 
@@ -163,16 +118,6 @@ public class GameFrame {
 
         AbstractAction stopLeft = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
-                /*
-                keyCounter -= 1;
-                if (keyCounter == 0){
-                    canvas.stopMovingX();
-                    System.out.println(keyCounter);
-                }
-                else {
-                    //keyCounter = 0;
-                    System.out.println(keyCounter);
-                } */
 
                 leftTrue = 0;
                 amtKeysX = 0;
@@ -184,16 +129,6 @@ public class GameFrame {
 
         AbstractAction stopRight = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
-                /*
-                keyCounter -= 1;
-                if (keyCounter == 0){
-                    canvas.stopMovingX();
-                    System.out.println(keyCounter);
-                }
-                else {
-                    //keyCounter = 0;
-                    System.out.println(keyCounter);
-                } */
 
                 rightTrue = 0;
                 amtKeysX = 0;  
