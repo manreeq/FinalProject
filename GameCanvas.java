@@ -29,10 +29,16 @@ public class GameCanvas extends JComponent {
     private Wall l7;
     private int p1Speed;
 
-    private Bomb bomb;
+    //bomb things
+    private Circle bomb;
     private Fuse fuse;
 
     private double timeLeft = 250;
+
+    //dash things
+    private int dashDuration, dashCooldown;
+    private Circle dashIndicator;
+
     
 
     private boolean wPressed, aPressed, sPressed, dPressed;
@@ -80,8 +86,11 @@ public class GameCanvas extends JComponent {
         walls.add(r2);
 
         //bomb parts
-        bomb = new Bomb(900, 20, 60, Color.GRAY);
+        bomb = new Circle(900, 20, 60, Color.GRAY);
         fuse = new Fuse(930, 50, 930, 300);
+
+        //dash indicator
+        dashIndicator = new Circle(20, 20, 40, Color.GREEN);
 
 
         p1 = new Player(75, 75, 30, Color.BLUE, 0, 0);
@@ -126,11 +135,18 @@ public class GameCanvas extends JComponent {
                     
                     if (!(fuse.isExploded)) 
                     {
-                    fuse.tick();
-                    p1.tick();
-                    p2.tick();
-                    repaint();
-                    Thread.sleep(5);}
+                        fuse.tick();
+
+                        if (dashDuration > 0) dashDuration -= 1;
+                        else resetSpeed();
+
+                        if (dashCooldown > 0) dashCooldown -= 1;
+                        else dashIndicator.changeColor(Color.GREEN);
+
+                        p1.tick();
+                        p2.tick();
+                        repaint();
+                        Thread.sleep(5);}
                 }   
             } catch(InterruptedException e) {
                 
@@ -174,6 +190,7 @@ public class GameCanvas extends JComponent {
 
         bomb.draw(g2d);
         fuse.draw(g2d);
+        dashIndicator.draw(g2d);
 
         p1.draw(g2d);
 
@@ -208,6 +225,21 @@ public class GameCanvas extends JComponent {
             repaint();
         } else p1.setHSpeed(0);
     } 
+    
+    // dash methods
+    public void dashPlayer(){
+        if (dashCooldown == 0){
+            dashCooldown = 300;
+            dashDuration = 30;
+            dashIndicator.changeColor(Color.RED);
+            p1Speed += 2;
+            System.out.println("dash");
+        }
+    }
+
+    public void resetSpeed(){
+        p1Speed = 1;
+    }
 
     public void wPressed(boolean b) {
         wPressed = b;

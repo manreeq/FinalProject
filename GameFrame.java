@@ -139,11 +139,19 @@ public class GameFrame {
             }
         };
 
+        AbstractAction dash = new AbstractAction() {
+            public void actionPerformed(ActionEvent ae){
+                canvas.dashPlayer();
+            }
+        };
+
 
         am.put("up", moveUp);
         am.put("down", moveDown);
         am.put("left", moveLeft);
         am.put("right", moveRight);
+        
+        am.put("shift", dash);
 
         am.put("upEnd", stopUp);
         am.put("downEnd", stopDown);
@@ -154,6 +162,8 @@ public class GameFrame {
         im.put(KeyStroke.getKeyStroke(83, 0), "down");
         im.put(KeyStroke.getKeyStroke(65, 0), "left");
         im.put(KeyStroke.getKeyStroke(68, 0), "right");
+
+        im.put(KeyStroke.getKeyStroke(32, 0), "shift");
 
         im.put(KeyStroke.getKeyStroke(87, 0, true), "upEnd");
         im.put(KeyStroke.getKeyStroke(83, 0, true), "downEnd");

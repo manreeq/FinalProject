@@ -82,6 +82,9 @@ public class Player extends PlayerEntity{
         this.vspeed = vspeed;
     }
 
+
+    
+
     // accessor methods:
     public int getX() {
         return x;
