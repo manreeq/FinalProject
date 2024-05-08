@@ -29,6 +29,12 @@ public class GameCanvas extends JComponent {
     private Wall l7;
     private int p1Speed;
 
+    private Bomb bomb;
+    private Fuse fuse;
+
+    private double timeLeft = 250;
+    
+
     private boolean wPressed, aPressed, sPressed, dPressed;
 
 
@@ -73,6 +79,11 @@ public class GameCanvas extends JComponent {
         r2 = new Wall(730, 200, 100, 100, wc);
         walls.add(r2);
 
+        //bomb parts
+        bomb = new Bomb(900, 20, 60, Color.GRAY);
+        fuse = new Fuse(930, 50, 930, 300);
+
+
         p1 = new Player(75, 75, 30, Color.BLUE, 0, 0);
         p2 = new Player(75, 75, 30, Color.RED, 0, 0);
 
@@ -113,11 +124,13 @@ public class GameCanvas extends JComponent {
                     if (!(aPressed || dPressed)) stopMovingX();
                     
                     
-
+                    if (!(fuse.isExploded)) 
+                    {
+                    fuse.tick();
                     p1.tick();
                     p2.tick();
                     repaint();
-                    Thread.sleep(5);
+                    Thread.sleep(5);}
                 }   
             } catch(InterruptedException e) {
                 
@@ -154,10 +167,17 @@ public class GameCanvas extends JComponent {
         Graphics2D g2d = (Graphics2D) g;
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
+        Stroke defaultStroke = g2d.getStroke();
+        g2d.setStroke(new BasicStroke((float) 15.0, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
         for (Wall w: walls) w.draw(g2d);
 
+        bomb.draw(g2d);
+        fuse.draw(g2d);
+
         p1.draw(g2d);
+
+        
     }
 
     

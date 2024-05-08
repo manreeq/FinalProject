@@ -39,6 +39,7 @@ public class GameFrame {
         frame.setVisible(true);
     }
 
+
     public void addKeyBindings() {
         ActionMap am = cp.getActionMap();
         InputMap im = cp.getInputMap();
