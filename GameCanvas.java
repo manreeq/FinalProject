@@ -2,6 +2,9 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
+import java.io.*;
 import java.util.*;
 
 public class GameCanvas extends JComponent {
@@ -147,7 +150,6 @@ public class GameCanvas extends JComponent {
 
                     } else {
                         repaint();
-                        System.out.println("else");
                         
                         //this loops parin infinitely so kahit pinindot mo yung play again, forever siyang magrerepaint
                         //the p is to break out of the loop and go back to the game "round"
@@ -202,7 +204,7 @@ public class GameCanvas extends JComponent {
         p1.draw(g2d);
 
         if (fuse.isExploded) {
-            pButton = new PlayButton(300, 300, 400, 200, Color.CYAN);
+            pButton = new PlayButton(300, 300);
             pButton.draw(g2d);
         }
     }
@@ -245,7 +247,6 @@ public class GameCanvas extends JComponent {
             if (b) p1Speed += 2;
             else 
             p1Speed += 4;
-            System.out.println(b);
         }
     }
 
@@ -292,42 +293,42 @@ public class GameCanvas extends JComponent {
         return p1;
     }
 
-    private class PlayButton {
-        private int x, y, width, height;
-        private Color color;
-
-        public PlayButton(int x, int y, int width, int height, Color color) {
-            this.x = x;
-            this.y=y;
-            this.width = width;
-            this.height = height;
-            this.color = color;
+    public class PlayButton {
+    
+        private BufferedImage image;
+        private String imgName;
+        private int x, y;
+    
+        public PlayButton(int x, int y) {
             
+            this.x = x;
+            this.y = y;
+            importImg();
+
             addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     restartGame();
                     p = true;
+                    System.out.println("tite");
                 }
-
-                /* this is for the fancy shit pag hinover mo mouse over this
-                public void mouseEntered(MouseEvent e) {
-                    System.out.println("enter");
-                }
-
-                public void mouseExited(MouseEvent e) {
-                    System.out.println("exit");
-                } */
             });
-
+    
         }
-
+    
+        private void importImg() {
+            InputStream is = getClass().getResourceAsStream("dash.png");
+            try {
+                image = ImageIO.read(is);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+    
         public void draw(Graphics2D g2d) {
-            Rectangle2D.Double circle = new Rectangle2D.Double(x, y, width, height);
-            g2d.setColor(color);
-            g2d.fill(circle);
+            g2d.drawImage(image, x, y, null);
+            
         }
 
-        
     }
 
 }

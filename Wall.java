@@ -1,12 +1,12 @@
 import java.awt.*;
 import java.awt.geom.*;
 
-public class Wall {
+public class Wall implements DrawingObject {
     
-    private double x, y, width, height;
+    private int x, y, width, height;
     private Color color;
 
-    public Wall (double x, double y, double width, double height, Color color) {
+    public Wall (int x, int y, int width, int height, Color color) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -37,10 +37,10 @@ public class Wall {
     } */
 
     // accessor methods:
-    public double getX() {
+    public int getX() {
         return x;
     }
-    public double getY() {
+    public int getY() {
         return y;
     }
     public double getWidth() {

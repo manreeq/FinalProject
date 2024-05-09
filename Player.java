@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.geom.*;
 
-public class Player {
+public class Player implements DrawingObject{
     // appearance and functionality of player
 
     private int side, x, y;

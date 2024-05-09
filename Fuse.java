@@ -32,7 +32,6 @@ public class Fuse {
             System.out.println("BOOM");
             isExploded = true;
         }
-        System.out.println(isExploded);
     }
 
     public void restart() {
