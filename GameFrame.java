@@ -11,6 +11,7 @@ public class GameFrame {
     //private int keyCounter;
     private int upTrue, downTrue, leftTrue, rightTrue;
     private int amtKeysX, amtKeysY;
+    private JButton button;
 
 
     public GameFrame() {
@@ -24,6 +25,7 @@ public class GameFrame {
         downTrue = 0;
         leftTrue = 0;
         rightTrue = 0;
+        button = new JButton("play");
     }
 
     public void setUpGUI() {
@@ -34,6 +36,7 @@ public class GameFrame {
         frame.setLocationRelativeTo(null);
         //Container cp = frame.getContentPane();
         cp.add(canvas);
+        cp.add(BorderLayout.SOUTH, button);
 
         //frame.pack();
         frame.setVisible(true);
@@ -100,8 +103,8 @@ public class GameFrame {
             public void actionPerformed(ActionEvent ae) {
 
                 upTrue = 0;
-                amtKeysY = 0;
-                if (amtKeysY == 0) 
+                amtKeysY -= 1;
+                if (upTrue == 0) 
                 canvas.wPressed(false);
 
             }
@@ -110,8 +113,8 @@ public class GameFrame {
         AbstractAction stopDown = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
                 downTrue = 0;
-                amtKeysY = 0;
-                if (amtKeysY == 0) 
+                amtKeysY -= 1;
+                if (downTrue == 0) 
                 //canvas.stopMovingY();
                 canvas.sPressed(false);
             }
@@ -121,8 +124,8 @@ public class GameFrame {
             public void actionPerformed(ActionEvent ae) {
 
                 leftTrue = 0;
-                amtKeysX = 0;
-                if (amtKeysX == 0) 
+                amtKeysX -= 1;
+                if (leftTrue == 0) 
                 //canvas.stopMovingX();
                 canvas.aPressed(false);
             }
@@ -132,8 +135,8 @@ public class GameFrame {
             public void actionPerformed(ActionEvent ae) {
 
                 rightTrue = 0;
-                amtKeysX = 0;  
-                if (amtKeysX == 0) 
+                amtKeysX -= 1;  
+                if (rightTrue == 0) 
                 //canvas.stopMovingX();
                 canvas.dPressed(false);
             }

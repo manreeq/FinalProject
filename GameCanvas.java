@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 import java.util.*;
 
 public class GameCanvas extends JComponent {
@@ -28,6 +29,8 @@ public class GameCanvas extends JComponent {
     private Wall l6;
     private Wall l7;
     private int p1Speed;
+    private PlayButton pButton;
+    private boolean p;
 
     //bomb things
     private Circle bomb;
@@ -49,6 +52,7 @@ public class GameCanvas extends JComponent {
         this.setPreferredSize(new Dimension(1000, 800));
         delay = 5;
         wc = Color.BLACK;
+        p = false;
         walls = new ArrayList<>();
         //entities = new ArrayList<>();
 
@@ -89,35 +93,21 @@ public class GameCanvas extends JComponent {
         bomb = new Circle(900, 20, 60, Color.GRAY);
         fuse = new Fuse(930, 50, 930, 300);
 
+        //play again
+        
+
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
-
 
         p1 = new Player(75, 75, 30, Color.BLUE, 0, 0);
         p2 = new Player(75, 75, 30, Color.RED, 0, 0);
 
-        /*
-        ActionListener timerListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-
-
-                //System.out.println(wallCollision(p1));
-                p1.tick();
-                p2.tick();
-                
-                repaint();
-            }
-        }; */
-
-        //timer = new Timer(delay, timerListener);
-        //timer.start();
-
+        //starts the game looop
         Thread t = new MyThread();
         t.start();
-
     }
 
+    //game loop
     private class MyThread extends Thread {
         public void run() {
             try {
@@ -146,15 +136,18 @@ public class GameCanvas extends JComponent {
                         p1.tick();
                         p2.tick();
                         repaint();
-                        Thread.sleep(5);}
-                }   
+                        Thread.sleep(5);
+
+                    } else {
+
+                    }
+                }
+
             } catch(InterruptedException e) {
                 
             }
             
         }
-
-        
     }
 
     public String wallCollision(Player p) {
@@ -280,6 +273,33 @@ public class GameCanvas extends JComponent {
 
     public Player getPlayer1() {
         return p1;
+    }
+
+    private class PlayButton {
+        private double x, y, size;
+        private Color color;
+
+        public PlayButton(double x, double y, double size, Color color) {
+            this.x = x;
+            this.y=y;
+            this.size = size;
+            this.color = color;
+            
+            addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    p = true;
+                }
+            });
+
+        }
+
+        public void draw(Graphics2D g2d) {
+            Ellipse2D.Double circle = new Ellipse2D.Double(x, y, size, size);
+            g2d.setColor(color);
+            g2d.fill(circle);
+        }
+
+        
     }
 
 }
