@@ -227,13 +227,15 @@ public class GameCanvas extends JComponent {
     } 
     
     // dash methods
-    public void dashPlayer(){
+    public void dashPlayer(boolean b){
         if (dashCooldown == 0){
             dashCooldown = 300;
             dashDuration = 30;
             dashIndicator.changeColor(Color.RED);
-            p1Speed += 2;
-            System.out.println("dash");
+            if (b) p1Speed += 2;
+            else 
+            p1Speed += 4;
+            System.out.println(b);
         }
     }
 

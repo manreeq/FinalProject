@@ -141,7 +141,10 @@ public class GameFrame {
 
         AbstractAction dash = new AbstractAction() {
             public void actionPerformed(ActionEvent ae){
-                canvas.dashPlayer();
+                canvas.dashPlayer(goingDiagonal());
+                System.out.println(amtKeysX + "x");
+                System.out.println(amtKeysY + "y");
+                System.out.println();
             }
         };
 
@@ -171,10 +174,10 @@ public class GameFrame {
         im.put(KeyStroke.getKeyStroke(68, 0, true), "rightEnd");
     }
 
-    /** 
-    public int getKeysPressed() {
-        return keyCounterY;
+    public boolean goingDiagonal() {
+        if (amtKeysX > 0 && amtKeysY > 0) return true;
+        else return false;
     }
-    */
+    
 
 }
