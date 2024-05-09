@@ -43,6 +43,7 @@ public class GameFrame {
     }
 
 
+    
     public void addKeyBindings() {
         ActionMap am = cp.getActionMap();
         InputMap im = cp.getInputMap();
@@ -177,6 +178,7 @@ public class GameFrame {
         im.put(KeyStroke.getKeyStroke(68, 0, true), "rightEnd");
     }
 
+    //DI PA GUMAGANA GAANO UNG DIAGONAL SHIT
     public boolean goingDiagonal() {
         if (amtKeysX > 0 && amtKeysY > 0) return true;
         else return false;

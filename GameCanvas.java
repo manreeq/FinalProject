@@ -31,6 +31,7 @@ public class GameCanvas extends JComponent {
     private int p1Speed;
     private PlayButton pButton;
     private boolean p;
+    private Thread t;
 
     //bomb things
     private Circle bomb;
@@ -93,17 +94,22 @@ public class GameCanvas extends JComponent {
         bomb = new Circle(900, 20, 60, Color.GRAY);
         fuse = new Fuse(930, 50, 930, 300);
 
-        //play again
-        
-
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
 
         p1 = new Player(75, 75, 30, Color.BLUE, 0, 0);
         p2 = new Player(75, 75, 30, Color.RED, 0, 0);
 
-        //starts the game looop
-        Thread t = new MyThread();
+        //starts the game loop
+        t = new MyThread();
+        while (true) {
+            
+        }
+    }
+
+    public void restartGame() {
+        p1.setX(75); p1.setY(75);
+        p2.setX(75); p2.setY(75);
         t.start();
     }
 
@@ -113,6 +119,7 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     // y-axis movement
+                    System.out.println("tite");
                     if ((sPressed) && (!wPressed)) movePlayerDown();
                     if ((wPressed) && (!sPressed)) movePlayerUp(); 
                     if (!(wPressed || sPressed)) stopMovingY();
@@ -139,7 +146,7 @@ public class GameCanvas extends JComponent {
                         Thread.sleep(5);
 
                     } else {
-
+                        repaint();
                     }
                 }
 
@@ -176,6 +183,8 @@ public class GameCanvas extends JComponent {
         Graphics2D g2d = (Graphics2D) g;
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
+        
+        //doesnt get used
         Stroke defaultStroke = g2d.getStroke();
         g2d.setStroke(new BasicStroke((float) 15.0, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
@@ -185,9 +194,12 @@ public class GameCanvas extends JComponent {
         fuse.draw(g2d);
         dashIndicator.draw(g2d);
 
-        p1.draw(g2d);
+        if (fuse.isExploded) {
+            pButton = new PlayButton(300, 300, 400, 200, Color.CYAN);
+            pButton.draw(g2d);
+        }
 
-        
+        p1.draw(g2d);
     }
 
     
@@ -276,25 +288,36 @@ public class GameCanvas extends JComponent {
     }
 
     private class PlayButton {
-        private double x, y, size;
+        private int x, y, width, height;
         private Color color;
 
-        public PlayButton(double x, double y, double size, Color color) {
+        public PlayButton(int x, int y, int width, int height, Color color) {
             this.x = x;
             this.y=y;
-            this.size = size;
+            this.width = width;
+            this.height = height;
             this.color = color;
             
             addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     p = true;
+                    System.out.println("tite");
                 }
+
+                /* this is for the fancy shit pag hinover mo mouse over this
+                public void mouseEntered(MouseEvent e) {
+                    System.out.println("enter");
+                }
+
+                public void mouseExited(MouseEvent e) {
+                    System.out.println("exit");
+                } */
             });
 
         }
 
         public void draw(Graphics2D g2d) {
-            Ellipse2D.Double circle = new Ellipse2D.Double(x, y, size, size);
+            Rectangle2D.Double circle = new Rectangle2D.Double(x, y, width, height);
             g2d.setColor(color);
             g2d.fill(circle);
         }
