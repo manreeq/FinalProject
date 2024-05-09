@@ -204,7 +204,7 @@ public class GameCanvas extends JComponent {
         p1.draw(g2d);
 
         if (fuse.isExploded) {
-            pButton = new PlayButton(300, 300);
+            pButton = new PlayButton(300, 250, 400, 200, "playagain.png");
             pButton.draw(g2d);
         }
     }
@@ -298,11 +298,13 @@ public class GameCanvas extends JComponent {
         private BufferedImage image;
         private String imgName;
         private int x, y;
+        private Image img;
     
-        public PlayButton(int x, int y) {
+        public PlayButton(int x, int y, int width, int height, String imgName) {
             
             this.x = x;
             this.y = y;
+            this.imgName = imgName;
             importImg();
 
             addMouseListener(new MouseAdapter() {
@@ -312,11 +314,13 @@ public class GameCanvas extends JComponent {
                     System.out.println("tite");
                 }
             });
+
+            img = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
     
         }
     
         private void importImg() {
-            InputStream is = getClass().getResourceAsStream("dash.png");
+            InputStream is = getClass().getResourceAsStream(imgName);
             try {
                 image = ImageIO.read(is);
             } catch(Exception e) {
@@ -325,7 +329,7 @@ public class GameCanvas extends JComponent {
         }
     
         public void draw(Graphics2D g2d) {
-            g2d.drawImage(image, x, y, null);
+            g2d.drawImage(img, x, y, null);
             
         }
 
