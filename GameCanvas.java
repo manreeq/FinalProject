@@ -30,7 +30,6 @@ public class GameCanvas extends JComponent {
     private Wall l7;
     private int p1Speed;
     private PlayButton pButton;
-    private boolean p;
     private Thread t;
 
     //bomb things
@@ -45,7 +44,7 @@ public class GameCanvas extends JComponent {
 
     
 
-    private boolean wPressed, aPressed, sPressed, dPressed;
+    private boolean wPressed, aPressed, sPressed, dPressed, p;
 
 
     public GameCanvas() {
@@ -53,8 +52,8 @@ public class GameCanvas extends JComponent {
         this.setPreferredSize(new Dimension(1000, 800));
         delay = 5;
         wc = Color.BLACK;
-        p = false;
         walls = new ArrayList<>();
+        p = false;
         //entities = new ArrayList<>();
 
         //border walls
@@ -92,7 +91,7 @@ public class GameCanvas extends JComponent {
 
         //bomb parts
         bomb = new Circle(900, 20, 60, Color.GRAY);
-        fuse = new Fuse(930, 50, 930, 300);
+        fuse = new Fuse(930, 50, 930, 70);
 
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
@@ -102,15 +101,17 @@ public class GameCanvas extends JComponent {
 
         //starts the game loop
         t = new MyThread();
-        while (true) {
-            
-        }
+        t.start();
     }
 
     public void restartGame() {
         p1.setX(75); p1.setY(75);
         p2.setX(75); p2.setY(75);
+        fuse.restart();
+        fuse.isExploded = false;
         t.start();
+        //System.out.println("tite");
+        
     }
 
     //game loop
@@ -119,7 +120,6 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     // y-axis movement
-                    System.out.println("tite");
                     if ((sPressed) && (!wPressed)) movePlayerDown();
                     if ((wPressed) && (!sPressed)) movePlayerUp(); 
                     if (!(wPressed || sPressed)) stopMovingY();
@@ -147,6 +147,11 @@ public class GameCanvas extends JComponent {
 
                     } else {
                         repaint();
+                        System.out.println("else");
+                        
+                        //this loops parin infinitely so kahit pinindot mo yung play again, forever siyang magrerepaint
+                        //the p is to break out of the loop and go back to the game "round"
+                        if (p) break;
                     }
                 }
 
@@ -194,12 +199,12 @@ public class GameCanvas extends JComponent {
         fuse.draw(g2d);
         dashIndicator.draw(g2d);
 
+        p1.draw(g2d);
+
         if (fuse.isExploded) {
             pButton = new PlayButton(300, 300, 400, 200, Color.CYAN);
             pButton.draw(g2d);
         }
-
-        p1.draw(g2d);
     }
 
     
@@ -300,8 +305,8 @@ public class GameCanvas extends JComponent {
             
             addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
+                    restartGame();
                     p = true;
-                    System.out.println("tite");
                 }
 
                 /* this is for the fancy shit pag hinover mo mouse over this

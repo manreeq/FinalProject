@@ -11,7 +11,6 @@ public class GameFrame {
     //private int keyCounter;
     private int upTrue, downTrue, leftTrue, rightTrue;
     private int amtKeysX, amtKeysY;
-    private JButton button;
 
 
     public GameFrame() {
@@ -25,7 +24,6 @@ public class GameFrame {
         downTrue = 0;
         leftTrue = 0;
         rightTrue = 0;
-        button = new JButton("play");
     }
 
     public void setUpGUI() {
@@ -36,7 +34,6 @@ public class GameFrame {
         frame.setLocationRelativeTo(null);
         //Container cp = frame.getContentPane();
         cp.add(canvas);
-        cp.add(BorderLayout.SOUTH, button);
 
         //frame.pack();
         frame.setVisible(true);

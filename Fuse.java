@@ -3,6 +3,7 @@ import java.awt.geom.*;
 
 public class Fuse {
     private double startx, starty, endx, endy;
+    private double origin;
     public boolean isExploded;
 
     public Fuse(double startx, double starty, double endx, double endy) {
@@ -10,7 +11,7 @@ public class Fuse {
         this.starty = starty;
         this.endx = endx;
         this.endy = endy;
-
+        origin = endy;
         isExploded = false;
     }
 
@@ -24,10 +25,17 @@ public class Fuse {
 
     public void tick(){
         
-        if (endy> starty) endy -= 0.05;
-        else {
+        if (endy> starty) {
+            endy -= 0.05;
+            isExploded = false;
+        } else {
             System.out.println("BOOM");
             isExploded = true;
         }
+        System.out.println(isExploded);
+    }
+
+    public void restart() {
+        endy = origin;
     }
 }

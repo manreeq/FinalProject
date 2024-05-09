@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.geom.*;
 
-public class Player extends PlayerEntity{
+public class Player {
     // appearance and functionality of player
 
     private int side, x, y;
@@ -53,12 +53,9 @@ public class Player extends PlayerEntity{
         y + side <= w.getY()));
     }
 
+
     public boolean collidePlayer(Player p) {
-        return false;
-    }
     
-    public boolean collidePowerUp(PowerUp pu) {
-        return false;
     }
 
 
