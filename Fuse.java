@@ -12,7 +12,7 @@ public class Fuse {
         this.endx = endx;
         this.endy = endy;
         origin = endy;
-        isExploded = false;
+        isExploded = true;
     }
 
     public void draw(Graphics2D g2d) {

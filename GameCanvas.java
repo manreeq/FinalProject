@@ -107,12 +107,11 @@ public class GameCanvas extends JComponent {
         t.start();
     }
 
-    public void restartGame() {
+    public void startGame() {
         p1.setX(75); p1.setY(75);
         p2.setX(75); p2.setY(75);
         fuse.restart();
         fuse.isExploded = false;
-        t.start();
         //System.out.println("tite");
         
     }
@@ -123,6 +122,7 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     // y-axis movement
+                    System.out.println("tite");
                     if ((sPressed) && (!wPressed)) movePlayerDown();
                     if ((wPressed) && (!sPressed)) movePlayerUp(); 
                     if (!(wPressed || sPressed)) stopMovingY();
@@ -152,8 +152,8 @@ public class GameCanvas extends JComponent {
                         repaint();
                         
                         //this loops parin infinitely so kahit pinindot mo yung play again, forever siyang magrerepaint
-                        //the p is to break out of the loop and go back to the game "round"
-                        if (p) break;
+                        //the p is to iterate to the next iteration and go back to the game "round"
+                        if (p) continue;
                     }
                 }
 
@@ -161,6 +161,30 @@ public class GameCanvas extends JComponent {
                 
             }
             
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHints(rh);
+        
+        //doesnt get used
+        Stroke defaultStroke = g2d.getStroke();
+        g2d.setStroke(new BasicStroke((float) 15.0, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+        for (Wall w: walls) w.draw(g2d);
+
+        bomb.draw(g2d);
+        fuse.draw(g2d);
+        dashIndicator.draw(g2d);
+
+        p1.draw(g2d);
+
+        if (fuse.isExploded) {
+            pButton = new PlayButton(300, 250, 400, 200);
+            pButton.draw(g2d);
         }
     }
 
@@ -185,29 +209,6 @@ public class GameCanvas extends JComponent {
 
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHints(rh);
-        
-        //doesnt get used
-        Stroke defaultStroke = g2d.getStroke();
-        g2d.setStroke(new BasicStroke((float) 15.0, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-
-        for (Wall w: walls) w.draw(g2d);
-
-        bomb.draw(g2d);
-        fuse.draw(g2d);
-        dashIndicator.draw(g2d);
-
-        p1.draw(g2d);
-
-        if (fuse.isExploded) {
-            pButton = new PlayButton(300, 250, 400, 200, "playagain.png");
-            pButton.draw(g2d);
-        }
-    }
 
     
     public void movePlayerUp(){
@@ -296,22 +297,22 @@ public class GameCanvas extends JComponent {
     public class PlayButton {
     
         private BufferedImage image;
-        private String imgName;
         private int x, y;
         private Image img;
     
-        public PlayButton(int x, int y, int width, int height, String imgName) {
+        public PlayButton(int x, int y, int width, int height) {
             
             this.x = x;
             this.y = y;
-            this.imgName = imgName;
             importImg();
 
             addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    restartGame();
-                    p = true;
-                    System.out.println("tite");
+                    if (fuse.isExploded) {
+                        startGame();
+                        p = true;
+                        System.out.println(t.isAlive());
+                    }
                 }
             });
 
@@ -320,7 +321,7 @@ public class GameCanvas extends JComponent {
         }
     
         private void importImg() {
-            InputStream is = getClass().getResourceAsStream(imgName);
+            InputStream is = getClass().getResourceAsStream("play.png");
             try {
                 image = ImageIO.read(is);
             } catch(Exception e) {
