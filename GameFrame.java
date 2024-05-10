@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.*;
+import java.net.*;
 
 public class GameFrame {
     // JFrame 
@@ -11,7 +13,7 @@ public class GameFrame {
     //private int keyCounter;
     private int upTrue, downTrue, leftTrue, rightTrue;
     private int amtKeysX, amtKeysY;
-
+    ClientSideConnection csc;
 
     public GameFrame() {
         canvas = new GameCanvas();
@@ -180,6 +182,36 @@ public class GameFrame {
     public boolean goingDiagonal() {
         if (amtKeysX > 0 && amtKeysY > 0) return true;
         else return false;
+    }
+
+
+
+    //
+    // di ko alam kung dito ba talaga tong mga to
+    //
+
+
+    public void connectToServer() {
+        csc = new ClientSideConnection();
+    }
+
+
+    private class ClientSideConnection {
+
+        private Socket socket;
+        private DataInputStream dataIn;
+        private DataOutputStream dataOut;
+
+        public ClientSideConnection() {
+            System.out.println("----Client----");
+            try {
+                socket = new Socket("localhost", 23307);
+                dataIn = new DataInputStream(socket.getInputStream());
+                dataOut = new DataOutputStream(socket.getOutputStream());
+            } catch (IOException ex) {
+                System.out.println("IO Exception from CSC constructor");
+            }
+        }
     }
     
 

@@ -45,8 +45,6 @@ public class GameCanvas extends JComponent {
     private int dashDuration, dashCooldown;
     private Circle dashIndicator;
 
-    
-
     private boolean wPressed, aPressed, sPressed, dPressed, p;
 
 
@@ -334,5 +332,6 @@ public class GameCanvas extends JComponent {
         }
 
     }
+
 
 }
