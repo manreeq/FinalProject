@@ -122,7 +122,6 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     // y-axis movement
-                    System.out.println("tite");
                     if ((sPressed) && (!wPressed)) movePlayerDown();
                     if ((wPressed) && (!sPressed)) movePlayerUp(); 
                     if (!(wPressed || sPressed)) stopMovingY();

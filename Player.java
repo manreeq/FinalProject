@@ -77,10 +77,7 @@ public class Player implements DrawingObject{
     }
     public void setVSpeed(int vspeed) {
         this.vspeed = vspeed;
-    }
-
-
-    
+    }    
 
     // accessor methods:
     public int getX() {

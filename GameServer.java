@@ -7,9 +7,10 @@ public class GameServer {
     private int numPlayers;
 
     public GameServer() {
+        System.out.println("Server started");
         numPlayers = 0;
         try {
-            ss = new ServerSocket(85632);
+            ss = new ServerSocket(23307);
         } catch (IOException ex) {
             System.out.println("IOException from GameServer Constructor");
         }
