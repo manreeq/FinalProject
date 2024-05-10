@@ -26,6 +26,12 @@ public class GameServer {
                 numPlayers++;
                 System.out.println("Player #" + numPlayers + " has connected.");
                 ServerSideConnection ssc = new ServerSideConnection(s, numPlayers)
+
+                if (numPlayers == 1) p1 = ssc;
+                else p2 = ssc;
+            
+                Thread t = new Thread(ssc);
+                t.start();
             }
 
             System.out.println("All players connected.");
