@@ -1,23 +1,21 @@
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import java.net.*;
 
 public class GameFrame {
-    // JFrame 
 
     private GameCanvas canvas;
     private JFrame frame;
     private JPanel cp;
-    //private int keyCounter;
     private int upTrue, downTrue, leftTrue, rightTrue;
     private int amtKeysX, amtKeysY;
     private Socket socket;
 
     //server fields;
     private int playerID;
-    
+    private ReadFromServer rfsRunnable;
+    private WriteToServer wtsRunnable;
 
     public GameFrame() {
         frame = new JFrame();
@@ -188,7 +186,17 @@ public class GameFrame {
     }
 
 
+
+
+    //
+    //
+    //
     //SERVER SHENANIGANS
+    //
+    //
+    //
+
+
 
     public void connectToServer() {
         try {
@@ -201,10 +209,93 @@ public class GameFrame {
             if (playerID == 1)
             System.out.println("Waiting for Player 2 to connect...");
 
+            rfsRunnable = new ReadFromServer(in);
+            wtsRunnable = new WriteToServer(out);
+            rfsRunnable.waitForStartMsg();
+
         } catch (IOException ex) {
             System.out.println("IOException from connectToServer()");
         }
     }
+
+
+    private class ReadFromServer implements Runnable {
+
+        private DataInputStream dataIn;
+
+        public ReadFromServer(DataInputStream in) {
+            dataIn = in;
+            System.out.println("RFS Runnable created");
+        }
+
+        public void run() {
+            try {
+                while (true) {
+                    System.out.println("TITE");
+                    if (canvas != null) {
+                        canvas.enemySetX(dataIn.readInt());
+                        canvas.enemySetY(dataIn.readInt());
+                        //read the boolean
+                    }
+                }
+
+            } catch (IOException e) {
+                System.out.println("IOException from RFS run()");
+            }
+        }
+
+        public void waitForStartMsg() {
+            try {
+                
+                String startMsg = dataIn.readUTF();
+                System.out.println("Message from server: " + startMsg);
+                Thread readThread = new Thread(rfsRunnable);
+                Thread writeThread = new Thread(wtsRunnable);
+                readThread.start();
+                writeThread.start();
+
+            } catch (IOException e) {
+                System.out.println("IOException from waitForStartMsg()");
+            }
+        }
+
+    }
     
+
+    private class WriteToServer implements Runnable {
+
+        private DataOutputStream dataOut;
+
+        public WriteToServer(DataOutputStream out) {
+            dataOut = out;
+            System.out.println("WTS Runnable created");
+        }
+
+        public void run() {
+            try {
+                
+                while (true) {
+                    
+                    if (canvas != null) {
+                        dataOut.writeInt(canvas.meGetX());
+                        dataOut.writeInt(canvas.meGetY());
+                        //dataOut.writeBoolean(canvas.ongoingGame);
+                        dataOut.flush();
+                    }
+                    
+                    try {
+                        Thread.sleep(25);
+                    } catch (InterruptedException ex) {
+                        System.out.println("InterruptedException from WTS run()");
+                    }
+
+                }
+
+            } catch (IOException ex) {
+                System.out.println("IOException from WTS run()");
+            }
+        }
+
+    }
 
 }

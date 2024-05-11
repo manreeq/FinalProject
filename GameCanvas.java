@@ -44,7 +44,8 @@ public class GameCanvas extends JComponent {
     private Circle dashIndicator;
 
     //keybinds
-    private boolean wPressed, aPressed, sPressed, dPressed, p;
+    private boolean wPressed, aPressed, sPressed, dPressed, firstGame;
+    public boolean ongoingGame;
 
     //server
     private Player me;
@@ -59,7 +60,7 @@ public class GameCanvas extends JComponent {
         delay = 5;
         wc = Color.BLACK;
         walls = new ArrayList<>();
-        p = false;
+        firstGame = true;
         //entities = new ArrayList<>();
 
         //border walls
@@ -117,6 +118,7 @@ public class GameCanvas extends JComponent {
             me.setX(1000-105); me.setY(750-105);
         }
         
+        ongoingGame = true;
         fuse.restart();
         fuse.isExploded = false;
         t.start();
@@ -165,7 +167,7 @@ public class GameCanvas extends JComponent {
                         
                         //this loops parin infinitely so kahit pinindot mo yung play again, forever siyang magrerepaint
                         //the p is to iterate to the next iteration and go back to the game "round"
-                        if (p) continue;
+                        if (!firstGame) continue;
                     }
                 }
 
@@ -198,6 +200,7 @@ public class GameCanvas extends JComponent {
         if (fuse.isExploded) {
             pButton = new PlayButton(300, 250, 400, 200);
             pButton.draw(g2d);
+            ongoingGame = false;
         }
     }
 
@@ -252,6 +255,26 @@ public class GameCanvas extends JComponent {
         } else p.setHSpeed(0);
     } 
     
+
+    public int meGetX() {
+        return me.getX();
+    }
+    public int meGetY() {
+        return me.getY();
+    }
+    public void enemySetX(int amt) {
+        enemy.setX(amt);
+    }
+    public void enemySetY(int amt) {
+        enemy.setY(amt);
+    }
+    public Player getMe() {
+        return me;
+    }
+    public Player getEnemy() {
+        return enemy;
+    }
+
     // dash methods
     public void dashPlayer(boolean b){
         if (dashCooldown == 0){
@@ -288,20 +311,6 @@ public class GameCanvas extends JComponent {
         p.setHSpeed(0);
     }
 
-    /*
-    public void stopMovingUp() {
-        if (p1.getYSpeed() < 0) p1.setVSpeed(0);
-    }
-    public void stopMovingDown() {
-        if (p1.getYSpeed() > 0) p1.setVSpeed(0);
-    }
-    public void stopMovingLeft() {
-        if (p1.getXSpeed() < 0) p1.setHSpeed(0);
-    }
-    public void stopMovingRight() {
-        if (p1.getXSpeed() > 0) p1.setHSpeed(0);
-    } */
-
     public class PlayButton {
     
         private BufferedImage image;
@@ -318,7 +327,7 @@ public class GameCanvas extends JComponent {
                 public void mouseClicked(MouseEvent e) {
                     if (fuse.isExploded) {
                         startGame();
-                        p = true;
+                        firstGame = false;
                         System.out.println(t.isAlive());
                     }
                 }
@@ -351,11 +360,9 @@ public class GameCanvas extends JComponent {
         if (playerID == 1) {
             me = new Player(75, 75, 30, Color.BLUE, 0, 0);
             enemy = new Player(1000-105, 750-105, 30, Color.RED, 0, 0);
-            System.out.println("TITE PLAYER 1");
         } else {
             me = new Player(1000-105, 750-105, 30, Color.RED, 0, 0);
             enemy = new Player(75, 75, 30, Color.BLUE, 0, 0);
-            System.out.println("TITE PLAYER 2");
         } 
     }
 
