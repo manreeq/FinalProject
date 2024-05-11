@@ -10,8 +10,6 @@ import java.util.*;
 public class GameCanvas extends JComponent {
     
     private ArrayList<Wall> walls;
-    private Player p1;
-    private Player p2;
     //private Player[] players;
 
     //private Timer timer;
@@ -45,10 +43,17 @@ public class GameCanvas extends JComponent {
     private int dashDuration, dashCooldown;
     private Circle dashIndicator;
 
+    //keybinds
     private boolean wPressed, aPressed, sPressed, dPressed, p;
 
+    //server
+    private Player me;
+    private Player enemy;
+    private int playerID;
 
-    public GameCanvas() {
+
+    public GameCanvas(int id) {
+        playerID = id;
         p1Speed = 1;
         this.setPreferredSize(new Dimension(1000, 750));
         delay = 5;
@@ -97,37 +102,47 @@ public class GameCanvas extends JComponent {
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
 
-        p1 = new Player(75, 75, 30, Color.BLUE, 0, 0);
-        p2 = new Player(1000-105, 750-105, 30, Color.RED, 0, 0);
-
         //starts the game loop
         t = new MyThread();
-        t.start();
+        createPlayers();
+
     }
 
     public void startGame() {
-        p1.setX(75); p1.setY(75);
-        p2.setX(75); p2.setY(75);
+        if (playerID == 1) {
+            me.setX(75); me.setY(75);
+            enemy.setX(1000-105); enemy.setY(750-105);
+        } else {
+            enemy.setX(75); enemy.setY(75);
+            me.setX(1000-105); me.setY(750-105);
+        }
+        
         fuse.restart();
         fuse.isExploded = false;
+        t.start();
         //System.out.println("tite");
         
     }
 
+    public void test(int a) {
+        System.out.println(a);
+    }
+
     //game loop
+    //i think this goes in the server
     private class MyThread extends Thread {
         public void run() {
             try {
                 while (true) {
                     // y-axis movement
-                    if ((sPressed) && (!wPressed)) movePlayerDown();
-                    if ((wPressed) && (!sPressed)) movePlayerUp(); 
-                    if (!(wPressed || sPressed)) stopMovingY();
+                    if ((sPressed) && (!wPressed)) movePlayerDown(me);
+                    if ((wPressed) && (!sPressed)) movePlayerUp(me); 
+                    if (!(wPressed || sPressed)) stopMovingY(me);
 
                     // x-axis movement
-                    if ((dPressed) && (!aPressed)) movePlayerRight();
-                    if ((aPressed) && (!dPressed)) movePlayerLeft();
-                    if (!(aPressed || dPressed)) stopMovingX();
+                    if ((dPressed) && (!aPressed)) movePlayerRight(me);
+                    if ((aPressed) && (!dPressed)) movePlayerLeft(me);
+                    if (!(aPressed || dPressed)) stopMovingX(me);
                     
                     
                     if (!(fuse.isExploded)) 
@@ -140,8 +155,8 @@ public class GameCanvas extends JComponent {
                         if (dashCooldown > 0) dashCooldown -= 1;
                         else dashIndicator.changeColor(Color.GREEN);
 
-                        p1.tick();
-                        p2.tick();
+                        me.tick();
+                        enemy.tick();
                         repaint();
                         Thread.sleep(5);
 
@@ -177,8 +192,8 @@ public class GameCanvas extends JComponent {
         fuse.draw(g2d);
         dashIndicator.draw(g2d);
 
-        p1.draw(g2d);
-        p2.draw(g2d);
+        me.draw(g2d);
+        enemy.draw(g2d);
 
         if (fuse.isExploded) {
             pButton = new PlayButton(300, 250, 400, 200);
@@ -209,32 +224,32 @@ public class GameCanvas extends JComponent {
 
 
     
-    public void movePlayerUp(){
-        if (!(wallCollision(p1) == "up")) {
-            p1.setVSpeed(-p1Speed);
+    public void movePlayerUp(Player p){
+        if (!(wallCollision(p) == "up")) {
+            p.setVSpeed(-p1Speed);
             repaint();
-        } else p1.setVSpeed(0);
+        } else p.setVSpeed(0);
     }
 
-    public void movePlayerDown(){
-        if (!(wallCollision(p1) == "down")) {
-            p1.setVSpeed(p1Speed);
+    public void movePlayerDown(Player p){
+        if (!(wallCollision(p) == "down")) {
+            p.setVSpeed(p1Speed);
             repaint();
-        } else p1.setVSpeed(0);
+        } else p.setVSpeed(0);
     }
 
-    public void movePlayerLeft(){
-        if (!(wallCollision(p1) == "left")) {
-            p1.setHSpeed(-p1Speed);
+    public void movePlayerLeft(Player p){
+        if (!(wallCollision(p) == "left")) {
+            p.setHSpeed(-p1Speed);
             repaint();
-        } else p1.setHSpeed(0);
+        } else p.setHSpeed(0);
     }
 
-    public void movePlayerRight(){
-        if (!(wallCollision(p1) == "right")) {
-            p1.setHSpeed(p1Speed);
+    public void movePlayerRight(Player p){
+        if (!(wallCollision(p) == "right")) {
+            p.setHSpeed(p1Speed);
             repaint();
-        } else p1.setHSpeed(0);
+        } else p.setHSpeed(0);
     } 
     
     // dash methods
@@ -266,11 +281,11 @@ public class GameCanvas extends JComponent {
         dPressed = b;
     }
 
-    public void stopMovingY(){ 
-        p1.setVSpeed(0);
+    public void stopMovingY(Player p){ 
+        p.setVSpeed(0);
     }
-    public void stopMovingX(){
-        p1.setHSpeed(0);
+    public void stopMovingX(Player p){
+        p.setHSpeed(0);
     }
 
     /*
@@ -286,11 +301,6 @@ public class GameCanvas extends JComponent {
     public void stopMovingRight() {
         if (p1.getXSpeed() > 0) p1.setHSpeed(0);
     } */
-
-
-    public Player getPlayer1() {
-        return p1;
-    }
 
     public class PlayButton {
     
@@ -332,6 +342,21 @@ public class GameCanvas extends JComponent {
             
         }
 
+    }
+
+
+    //SERVER SHENANIGANS
+
+    public void createPlayers() {
+        if (playerID == 1) {
+            me = new Player(75, 75, 30, Color.BLUE, 0, 0);
+            enemy = new Player(1000-105, 750-105, 30, Color.RED, 0, 0);
+            System.out.println("TITE PLAYER 1");
+        } else {
+            me = new Player(1000-105, 750-105, 30, Color.RED, 0, 0);
+            enemy = new Player(75, 75, 30, Color.BLUE, 0, 0);
+            System.out.println("TITE PLAYER 2");
+        } 
     }
 
 

@@ -13,15 +13,13 @@ public class GameFrame {
     //private int keyCounter;
     private int upTrue, downTrue, leftTrue, rightTrue;
     private int amtKeysX, amtKeysY;
-    
-    //SERVER
-    private ClientSideConnection csc;
-    private int playerID;
-    private int otherPlayer;
+    private Socket socket;
 
+    //server fields;
+    private int playerID;
+    
 
     public GameFrame() {
-        canvas = new GameCanvas();
         frame = new JFrame();
         cp = (JPanel) frame.getContentPane();
         cp.setFocusable(true);
@@ -34,11 +32,14 @@ public class GameFrame {
     }
 
     public void setUpGUI() {
-        frame.setTitle("Hot Potato");
+        frame.setTitle("Player " + playerID + ": Hot Potato");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         //Container cp = frame.getContentPane();
+        
+        canvas = new GameCanvas(playerID);
+        
         cp.add(canvas);
 
         frame.pack();
@@ -46,7 +47,6 @@ public class GameFrame {
     }
 
 
-    
     public void addKeyBindings() {
         ActionMap am = cp.getActionMap();
         InputMap im = cp.getInputMap();
@@ -188,34 +188,21 @@ public class GameFrame {
     }
 
 
-
-    //
-    // di ko alam kung dito ba talaga tong mga to
-    //
-
+    //SERVER SHENANIGANS
 
     public void connectToServer() {
-        csc = new ClientSideConnection();
-    }
+        try {
+            socket = new Socket("localhost", 23307);
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            playerID = in.readInt();
+            System.out.println("Connected as Player " + playerID);
 
+            if (playerID == 1)
+            System.out.println("Waiting for Player 2 to connect...");
 
-    private class ClientSideConnection {
-
-        private Socket socket;
-        private DataInputStream dataIn;
-        private DataOutputStream dataOut;
-
-        public ClientSideConnection() {
-            System.out.println("----Client----");
-
-            try {
-                socket = new Socket("localhost", 23307);
-                dataIn = new DataInputStream(socket.getInputStream());
-                dataOut = new DataOutputStream(socket.getOutputStream());
-            } catch (IOException ex) {
-                System.out.println("IO Exception from CSC constructor");
-            }
-            
+        } catch (IOException ex) {
+            System.out.println("IOException from connectToServer()");
         }
     }
     

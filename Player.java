@@ -54,17 +54,11 @@ public class Player implements DrawingObject{
     }
 
 
-    public boolean collidePlayer(Player p) {
-    
-    }
-
-
     //movement methods
     public void tick() {
         x += hspeed;
         y += vspeed;
         //System.out.println("tite");
-        
     }
     public void setX(int x) {
         this.x = x;
