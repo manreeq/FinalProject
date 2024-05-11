@@ -13,7 +13,12 @@ public class GameFrame {
     //private int keyCounter;
     private int upTrue, downTrue, leftTrue, rightTrue;
     private int amtKeysX, amtKeysY;
-    ClientSideConnection csc;
+    
+    //SERVER
+    private ClientSideConnection csc;
+    private int playerID;
+    private int otherPlayer;
+
 
     public GameFrame() {
         canvas = new GameCanvas();
@@ -204,6 +209,7 @@ public class GameFrame {
 
         public ClientSideConnection() {
             System.out.println("----Client----");
+
             try {
                 socket = new Socket("localhost", 23307);
                 dataIn = new DataInputStream(socket.getInputStream());
@@ -211,6 +217,7 @@ public class GameFrame {
             } catch (IOException ex) {
                 System.out.println("IO Exception from CSC constructor");
             }
+            
         }
     }
     
