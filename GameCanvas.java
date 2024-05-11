@@ -60,11 +60,11 @@ public class GameCanvas extends JComponent {
         //border walls
         bNorth = new Wall(0, -30, 1000, 40, wc);
         walls.add(bNorth);
-        bSouth = new Wall(0, 755, 1000, 40, wc);
+        bSouth = new Wall(0, 790, 1000, 40, wc);
         walls.add(bSouth);
-        bEast = new Wall(980, 0, 40, 800, wc);
+        bEast = new Wall(990, 0, 40, 800, wc);
         walls.add(bEast);
-        bWest = new Wall(-35, -0, 40, 800, wc);
+        bWest = new Wall(-30, 0, 40, 800, wc);
         walls.add(bWest);
 
         //obstacles
@@ -98,7 +98,7 @@ public class GameCanvas extends JComponent {
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
 
         p1 = new Player(75, 75, 30, Color.BLUE, 0, 0);
-        p2 = new Player(75, 75, 30, Color.RED, 0, 0);
+        p2 = new Player(1000-105, 800-105, 30, Color.RED, 0, 0);
 
         //starts the game loop
         t = new MyThread();
@@ -178,6 +178,7 @@ public class GameCanvas extends JComponent {
         dashIndicator.draw(g2d);
 
         p1.draw(g2d);
+        p2.draw(g2d);
 
         if (fuse.isExploded) {
             pButton = new PlayButton(300, 250, 400, 200);

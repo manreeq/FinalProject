@@ -25,7 +25,7 @@ public class GameServer {
                 Socket s = ss.accept();
                 numPlayers++;
                 System.out.println("Player #" + numPlayers + " has connected.");
-                ServerSideConnection ssc = new ServerSideConnection(s, numPlayers)
+                ServerSideConnection ssc = new ServerSideConnection(s, numPlayers);
 
                 if (numPlayers == 1) p1 = ssc;
                 else p2 = ssc;
