@@ -50,7 +50,7 @@ public class GameCanvas extends JComponent {
 
     public GameCanvas() {
         p1Speed = 1;
-        this.setPreferredSize(new Dimension(1000, 800));
+        this.setPreferredSize(new Dimension(1000, 750));
         delay = 5;
         wc = Color.BLACK;
         walls = new ArrayList<>();
@@ -60,7 +60,7 @@ public class GameCanvas extends JComponent {
         //border walls
         bNorth = new Wall(0, -30, 1000, 40, wc);
         walls.add(bNorth);
-        bSouth = new Wall(0, 790, 1000, 40, wc);
+        bSouth = new Wall(0, 740, 1000, 40, wc);
         walls.add(bSouth);
         bEast = new Wall(990, 0, 40, 800, wc);
         walls.add(bEast);
@@ -92,13 +92,13 @@ public class GameCanvas extends JComponent {
 
         //bomb parts
         bomb = new Circle(900, 20, 60, Color.GRAY);
-        fuse = new Fuse(930, 50, 930, 70);
+        fuse = new Fuse(930, 50, 930, 550);
 
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
 
         p1 = new Player(75, 75, 30, Color.BLUE, 0, 0);
-        p2 = new Player(1000-105, 800-105, 30, Color.RED, 0, 0);
+        p2 = new Player(1000-105, 750-105, 30, Color.RED, 0, 0);
 
         //starts the game loop
         t = new MyThread();
@@ -155,7 +155,7 @@ public class GameCanvas extends JComponent {
                 }
 
             } catch(InterruptedException e) {
-                
+                System.out.println("Exception at thread");
             }
             
         }
@@ -243,7 +243,7 @@ public class GameCanvas extends JComponent {
             dashCooldown = 300;
             dashDuration = 30;
             dashIndicator.changeColor(Color.RED);
-            if (b) p1Speed += 2;
+            if (b) p1Speed += 2.5;
             else 
             p1Speed += 4;
         }
@@ -323,7 +323,7 @@ public class GameCanvas extends JComponent {
             try {
                 image = ImageIO.read(is);
             } catch(Exception e) {
-                e.printStackTrace();
+                System.out.println("Exception at imporImg");
             }
         }
     
