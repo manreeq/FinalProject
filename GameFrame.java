@@ -231,7 +231,7 @@ public class GameFrame {
         public void run() {
             try {
                 while (true) {
-                    System.out.println("TITE");
+                    System.out.println();
                     if (canvas != null) {
                         canvas.enemySetX(dataIn.readInt());
                         canvas.enemySetY(dataIn.readInt());

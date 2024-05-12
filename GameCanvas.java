@@ -119,6 +119,7 @@ public class GameCanvas extends JComponent {
 
         //starts the game loop
         t = new MyThread();
+        t.start();
         createPlayers();
 
     }
@@ -134,13 +135,8 @@ public class GameCanvas extends JComponent {
         
         fuse.restart();
         fuse.isExploded = false;
-        t.start();
         //System.out.println("tite");
         
-    }
-
-    public void test(int a) {
-        System.out.println(a);
     }
 
     //game loop
@@ -150,6 +146,7 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     // y-axis movement
+                    
                     if ((sPressed) && (!wPressed)) movePlayerDown(me);
                     if ((wPressed) && (!sPressed)) movePlayerUp(me); 
                     if (!(wPressed || sPressed)) stopMovingY(me);
@@ -159,7 +156,10 @@ public class GameCanvas extends JComponent {
                     if ((aPressed) && (!dPressed)) movePlayerLeft(me);
                     if (!(aPressed || dPressed)) stopMovingX(me);
                     
-                    
+                    if (fuse.isExploded) {
+                        meReady = false;
+                        enemyReady = false;
+                    }
 
                     if (!(fuse.isExploded) && meReady && enemyReady) 
                     {
@@ -186,16 +186,14 @@ public class GameCanvas extends JComponent {
 
                         me.tick();
                         enemy.tick();
-                        repaint();
-                        Thread.sleep(5);
-
+                    
                     } else {
-                        repaint();
-                        
-                        //this loops parin infinitely so kahit pinindot mo yung play again, forever siyang magrerepaint
-                        //the p is to iterate to the next iteration and go back to the game "round"
-                        //if (!firstGame) continue;
+                        if (fuse.isExploded && meReady) meReady = false;
+                        else if (fuse.isExploded && !meReady) continue;
                     }
+
+                    repaint();
+                    Thread.sleep(5);
                 }
 
             } catch(InterruptedException e) {
@@ -227,8 +225,6 @@ public class GameCanvas extends JComponent {
 
         if (fuse.isExploded) {
 
-            meReady = false;
-            enemyReady = false;
             pButton.draw(g2d);
 
             if (!firstGame) {
