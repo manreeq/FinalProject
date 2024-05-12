@@ -36,8 +36,12 @@ public class GameCanvas extends JComponent {
     //bomb things
     private Circle bomb;
     private Fuse fuse;
-    private boolean hasPotato;
+    private boolean meHasPotato;
     private Circle potatoIndicator;
+    
+    private int potatoSwapCooldown;
+    private boolean isColliding;
+    private boolean enemyCollided;
 
     private double timeLeft = 250;
 
@@ -47,7 +51,6 @@ public class GameCanvas extends JComponent {
 
     //keybinds
     private boolean wPressed, aPressed, sPressed, dPressed, firstGame;
-    public boolean ongoingGame;
 
     //server
     private Player me;
@@ -104,13 +107,15 @@ public class GameCanvas extends JComponent {
 
         //bomb parts
         bomb = new Circle(900, 20, 60, Color.GRAY);
-        fuse = new Fuse(930, 50, 930, 550);
+        fuse = new Fuse(930, 50, 930, 70);
 
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
 
         //potato indicator
         potatoIndicator = new Circle(20, 80, 40, Color.GREEN);
+
+        pButton = new PlayButton(300, 250, 400, 200);
 
         //starts the game loop
         t = new MyThread();
@@ -127,7 +132,6 @@ public class GameCanvas extends JComponent {
             me.setX(1000-105); me.setY(750-105);
         }
         
-        ongoingGame = true;
         fuse.restart();
         fuse.isExploded = false;
         t.start();
@@ -156,9 +160,20 @@ public class GameCanvas extends JComponent {
                     if (!(aPressed || dPressed)) stopMovingX(me);
                     
                     
+
                     if (!(fuse.isExploded) && meReady && enemyReady) 
                     {
                         fuse.tick();
+
+                        isColliding = me.collidePlayer(enemy);
+
+                        if ((isColliding) && potatoSwapCooldown == 0 && (enemyCollided)) {
+                            me.changePotatoStatus();
+                            enemy.changePotatoStatus();
+                            potatoSwapCooldown = 150;
+                        }
+
+                        if (potatoSwapCooldown > 0) potatoSwapCooldown -= 1;
 
                         if (dashDuration > 0) dashDuration -= 1;
                         else resetSpeed();
@@ -179,7 +194,7 @@ public class GameCanvas extends JComponent {
                         
                         //this loops parin infinitely so kahit pinindot mo yung play again, forever siyang magrerepaint
                         //the p is to iterate to the next iteration and go back to the game "round"
-                        if (!firstGame) continue;
+                        //if (!firstGame) continue;
                     }
                 }
 
@@ -211,9 +226,20 @@ public class GameCanvas extends JComponent {
         enemy.draw(g2d);
 
         if (fuse.isExploded) {
-            pButton = new PlayButton(300, 250, 400, 200);
+
+            meReady = false;
+            enemyReady = false;
             pButton.draw(g2d);
-            ongoingGame = false;
+
+            if (!firstGame) {
+                if (meHasPotato) {
+                    //show lose message
+                }
+                else {
+                    //show win message
+                }
+            }
+
         }
     }
 
@@ -253,6 +279,7 @@ public class GameCanvas extends JComponent {
         } return null;
     }
 
+    //Accessors and mutators
     public void setEnemyReady(boolean ready) {
         enemyReady = ready;
     }
@@ -261,12 +288,24 @@ public class GameCanvas extends JComponent {
         return meReady;
     }
 
-    public boolean getPotatoStatus() {
+    public boolean getColliding() {
+        return isColliding;
+    }
+
+    public boolean getMePotato() {
         return me.getPotatoStatus();
     }
 
     public boolean getEnemyPotato() {
         return enemy.getPotatoStatus();
+    }
+
+    public void setEnemyCollided (boolean b){
+        enemyCollided = b;
+    }
+
+    public void swapPotatoStatus(Player p){
+        p.changePotatoStatus();
     }
 
     
@@ -276,7 +315,10 @@ public class GameCanvas extends JComponent {
         if (!(wallCollision(p) == "up") && !(playerCollision(p) == "up")) {
             p.setVSpeed(-p1Speed);
             repaint();
-        } else p.setVSpeed(0);
+        } else {
+            p.setVSpeed(0);
+            //me.changePotatoStatus();
+        }
     }
 
     public void movePlayerDown(Player p){

@@ -125,4 +125,13 @@ public class Player implements DrawingObject{
         return hasPotato;
     }
 
+    public void changePotatoStatus(){
+        if (getPotatoStatus() == true) {
+            hasPotato = false;
+        }
+        else {
+            hasPotato = true;
+        }
+    }
+
 }

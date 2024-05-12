@@ -236,6 +236,7 @@ public class GameFrame {
                         canvas.enemySetX(dataIn.readInt());
                         canvas.enemySetY(dataIn.readInt());
                         canvas.setEnemyReady(dataIn.readBoolean());
+                        canvas.setEnemyCollided(dataIn.readBoolean());
                     }
                 }
 
@@ -280,6 +281,7 @@ public class GameFrame {
                         dataOut.writeInt(canvas.meGetX());
                         dataOut.writeInt(canvas.meGetY());
                         dataOut.writeBoolean(canvas.getMeReady());
+                        dataOut.writeBoolean(canvas.getColliding());
                         dataOut.flush();
                     }
                     
