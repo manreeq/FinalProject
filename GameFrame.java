@@ -235,7 +235,7 @@ public class GameFrame {
                     if (canvas != null) {
                         canvas.enemySetX(dataIn.readInt());
                         canvas.enemySetY(dataIn.readInt());
-                        //read the boolean
+                        canvas.setEnemyReady(dataIn.readBoolean());
                     }
                 }
 
@@ -279,7 +279,7 @@ public class GameFrame {
                     if (canvas != null) {
                         dataOut.writeInt(canvas.meGetX());
                         dataOut.writeInt(canvas.meGetY());
-                        //dataOut.writeBoolean(canvas.ongoingGame);
+                        dataOut.writeBoolean(canvas.getMeReady());
                         dataOut.flush();
                     }
                     

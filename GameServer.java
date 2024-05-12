@@ -12,6 +12,8 @@ public class GameServer {
     private WriteToClient p1WriteRunnable;
     private WriteToClient p2WriteRunnable;
     private int p1x, p1y, p2x, p2y;
+    private boolean p1Ready, p2Ready;
+    private boolean p1HasPotato, p2HasPotato;
 
     public GameServer() {
         System.out.println("Server started");
@@ -53,7 +55,7 @@ public class GameServer {
                     p2WriteRunnable = wtc;
                     p1WriteRunnable.sendStartMsg();
                     p2WriteRunnable.sendStartMsg();
-                    
+
                     Thread readThread1 = new Thread(p1ReadRunnable);
                     Thread readThread2 = new Thread(p2ReadRunnable);
                     readThread1.start();
@@ -91,9 +93,11 @@ public class GameServer {
                     if (playerID == 1) {
                         p1x = dataIn.readInt();
                         p1y = dataIn.readInt();
+                        p1Ready = dataIn.readBoolean();
                     } else {
                         p2x = dataIn.readInt();
                         p2y = dataIn.readInt();
+                        p2Ready = dataIn.readBoolean();
                     }
                     //read the boolean
                 }
@@ -123,12 +127,12 @@ public class GameServer {
                     if (playerID == 1) {
                         dataOut.writeInt(p2x);
                         dataOut.writeInt(p2y);
-                        //write the boolean
+                        dataOut.writeBoolean(p2Ready);
                         dataOut.flush();
                     } else {
                         dataOut.writeInt(p1x);
                         dataOut.writeInt(p1y);
-                        //write the boolean
+                        dataOut.writeBoolean(p1Ready);
                         dataOut.flush();
                     }
 

@@ -7,14 +7,16 @@ public class Player implements DrawingObject{
     private int side, x, y;
     private Color color;
     private int hspeed, vspeed;
+    private boolean hasPotato;
 
-    public Player (int x, int y, int side, Color color, int hspeed, int vspeed) {
+    public Player (int x, int y, int side, Color color, int hspeed, int vspeed, boolean hasPotato) {
         this.x = x;
         this.y = y;
         this.side = side;
         this.color = color;
         this.hspeed = hspeed;
         this.vspeed = vspeed;
+        this.hasPotato = hasPotato;
     }
     
     public void draw(Graphics2D g2d) {
@@ -45,12 +47,41 @@ public class Player implements DrawingObject{
         } else return false;
     }
 
+    //what player
+    public boolean playerRightC(Player p) {
+        if (x + side >= p.getX() && x < p.getX() && getY() + getSide() - 1 > p.getY() && getY() + 1 < p.getY() + p.getSide()) {
+            return true;
+        } else return false;
+    }
+    public boolean playerLeftC(Player p ) {
+        if (x <= p.getX() + p.getSide() && x + side > p.getX() + p.getSide() && getY() + getSide() - 1 > p.getY() && getY() + 1 < p.getY() + p.getSide()) {
+            return true;
+        } else return false;
+    }
+    public boolean playerDownC(Player p) {
+        if (y + side >= p.getY() && y < p.getY()) {
+            return true;
+        } else return false;
+    }
+    public boolean playerUpC(Player p) {
+        if (y <= p.getY() + p.getSide() && y + side > p.getY() + p.getSide()) {
+            return true;
+        } else return false;
+    }
+
     //collision
     public boolean collideWall(Wall w) {
         return (!(x + side <= w.getX() ||
         x >= w.getX() + w.getWidth() ||
         y >= w.getY() + w.getHeight() ||
         y + side <= w.getY()));
+    }
+
+    public boolean collidePlayer(Player p) {
+        return (!(x + side <= p.getX() ||
+        x >= p.getX() + p.getSide() ||
+        y >= p.getY() + p.getSide() ||
+        y + side <= p.getY()));
     }
 
 
@@ -88,6 +119,10 @@ public class Player implements DrawingObject{
     }
     public int getYSpeed() {
         return vspeed;
+    }
+
+    public boolean getPotatoStatus(){
+        return hasPotato;
     }
 
 }

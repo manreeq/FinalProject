@@ -36,6 +36,8 @@ public class GameCanvas extends JComponent {
     //bomb things
     private Circle bomb;
     private Fuse fuse;
+    private boolean hasPotato;
+    private Circle potatoIndicator;
 
     private double timeLeft = 250;
 
@@ -52,6 +54,8 @@ public class GameCanvas extends JComponent {
     private Player enemy;
     private int playerID;
 
+    private boolean meReady, enemyReady;
+
 
     public GameCanvas(int id) {
         playerID = id;
@@ -61,6 +65,8 @@ public class GameCanvas extends JComponent {
         wc = Color.BLACK;
         walls = new ArrayList<>();
         firstGame = true;
+        meReady = false;
+        enemyReady = false;
         //entities = new ArrayList<>();
 
         //border walls
@@ -102,6 +108,9 @@ public class GameCanvas extends JComponent {
 
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
+
+        //potato indicator
+        potatoIndicator = new Circle(20, 80, 40, Color.GREEN);
 
         //starts the game loop
         t = new MyThread();
@@ -147,7 +156,7 @@ public class GameCanvas extends JComponent {
                     if (!(aPressed || dPressed)) stopMovingX(me);
                     
                     
-                    if (!(fuse.isExploded)) 
+                    if (!(fuse.isExploded) && meReady && enemyReady) 
                     {
                         fuse.tick();
 
@@ -156,6 +165,9 @@ public class GameCanvas extends JComponent {
 
                         if (dashCooldown > 0) dashCooldown -= 1;
                         else dashIndicator.changeColor(Color.GREEN);
+
+                        if (me.getPotatoStatus()) potatoIndicator.changeColor(Color.RED);
+                        else potatoIndicator.changeColor(Color.GREEN);
 
                         me.tick();
                         enemy.tick();
@@ -193,6 +205,7 @@ public class GameCanvas extends JComponent {
         bomb.draw(g2d);
         fuse.draw(g2d);
         dashIndicator.draw(g2d);
+        potatoIndicator.draw(g2d);
 
         me.draw(g2d);
         enemy.draw(g2d);
@@ -225,31 +238,63 @@ public class GameCanvas extends JComponent {
 
     }
 
+    public String playerCollision(Player p) {
+        boolean tempC = false;
+        Player otherPlayer = enemy;
+        if (p.collidePlayer(otherPlayer)) {
+            tempC = true;
+        } else tempC = false;
+
+        if (tempC) {
+            if (p.playerRightC(otherPlayer)) return "right";
+            if (p.playerLeftC(otherPlayer) && p.getY() + p.getSide() > otherPlayer.getY()) return "left";
+            if (p.playerDownC(otherPlayer)) return "down";
+            if (p.playerUpC(otherPlayer)) return "up";
+        } return null;
+    }
+
+    public void setEnemyReady(boolean ready) {
+        enemyReady = ready;
+    }
+
+    public boolean getMeReady(){
+        return meReady;
+    }
+
+    public boolean getPotatoStatus() {
+        return me.getPotatoStatus();
+    }
+
+    public boolean getEnemyPotato() {
+        return enemy.getPotatoStatus();
+    }
+
+    
 
     
     public void movePlayerUp(Player p){
-        if (!(wallCollision(p) == "up")) {
+        if (!(wallCollision(p) == "up") && !(playerCollision(p) == "up")) {
             p.setVSpeed(-p1Speed);
             repaint();
         } else p.setVSpeed(0);
     }
 
     public void movePlayerDown(Player p){
-        if (!(wallCollision(p) == "down")) {
+        if (!(wallCollision(p) == "down") && !(playerCollision(p) == "down")) {
             p.setVSpeed(p1Speed);
             repaint();
         } else p.setVSpeed(0);
     }
 
     public void movePlayerLeft(Player p){
-        if (!(wallCollision(p) == "left")) {
+        if (!(wallCollision(p) == "left") && !(playerCollision(p) == "left")) {
             p.setHSpeed(-p1Speed);
             repaint();
         } else p.setHSpeed(0);
     }
 
     public void movePlayerRight(Player p){
-        if (!(wallCollision(p) == "right")) {
+        if (!(wallCollision(p) == "right") && !(playerCollision(p) == "right")) {
             p.setHSpeed(p1Speed);
             repaint();
         } else p.setHSpeed(0);
@@ -327,8 +372,11 @@ public class GameCanvas extends JComponent {
                 public void mouseClicked(MouseEvent e) {
                     if (fuse.isExploded) {
                         startGame();
+                        meReady = true;
                         firstGame = false;
                         System.out.println(t.isAlive());
+                        System.out.println(meReady);
+                        System.out.println(enemyReady);
                     }
                 }
             });
@@ -358,11 +406,11 @@ public class GameCanvas extends JComponent {
 
     public void createPlayers() {
         if (playerID == 1) {
-            me = new Player(75, 75, 30, Color.BLUE, 0, 0);
-            enemy = new Player(1000-105, 750-105, 30, Color.RED, 0, 0);
+            me = new Player(75, 75, 30, Color.BLUE, 0, 0, true);
+            enemy = new Player(1000-105, 750-105, 30, Color.RED, 0, 0, false);
         } else {
-            me = new Player(1000-105, 750-105, 30, Color.RED, 0, 0);
-            enemy = new Player(75, 75, 30, Color.BLUE, 0, 0);
+            me = new Player(1000-105, 750-105, 30, Color.RED, 0, 0, false);
+            enemy = new Player(75, 75, 30, Color.BLUE, 0, 0, true);
         } 
     }
 
