@@ -239,6 +239,7 @@ public class GameFrame {
                         canvas.enemySetY(dataIn.readInt());
                         canvas.setEnemyReady(dataIn.readBoolean());
                         canvas.setEnemyCollided(dataIn.readBoolean());
+                        canvas.setExploded(dataIn.readBoolean());
                     }
                 }
 
@@ -284,11 +285,12 @@ public class GameFrame {
                         dataOut.writeInt(canvas.meGetY());
                         dataOut.writeBoolean(canvas.getMeReady());
                         dataOut.writeBoolean(canvas.getColliding());
+                        dataOut.writeBoolean(canvas.getFuseExploded());;
                         dataOut.flush();
                     }
                     
                     try {
-                        Thread.sleep(25);
+                        Thread.sleep(5);
                     } catch (InterruptedException ex) {
                         System.out.println("InterruptedException from WTS run()");
                     }

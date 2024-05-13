@@ -39,6 +39,7 @@ public class GameCanvas extends JComponent {
     private int potatoSwapCooldown;
     private boolean isColliding;
     private boolean enemyCollided;
+    private boolean exploded;
 
     private double timeLeft = 250;
 
@@ -54,7 +55,7 @@ public class GameCanvas extends JComponent {
     private Player enemy;
     private int playerID;
 
-    private boolean meReady, enemyReady;
+    private boolean meReady, enemyReady, ongoing;
 
     private Circle meredi, themredi;
 
@@ -110,8 +111,14 @@ public class GameCanvas extends JComponent {
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
 
-        meredi = new Circle(20, 500, 40, Color.RED);
-        themredi = new Circle(20, 560, 40, Color.RED);
+        if (playerID == 1) {
+            meredi = new Circle(20, 500, 40, Color.RED);
+            themredi = new Circle(20, 560, 40, Color.RED);
+        } else {
+            themredi = new Circle(20, 500, 40, Color.RED);
+            meredi = new Circle(20, 560, 40, Color.RED);
+        }
+        
 
         //potato indicator
         potatoIndicator = new Circle(20, 80, 40, Color.GREEN);
@@ -134,6 +141,7 @@ public class GameCanvas extends JComponent {
             me.setX(1000-105); me.setY(750-105);
         }
         
+        ongoing = true;
         fuse.restart();
         fuse.isExploded = false;
         //System.out.println("tite");
@@ -147,9 +155,14 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     
+                    
+
                     Thread.sleep(5);
 
-                    if (!(fuse.isExploded) && meReady && enemyReady) {
+                    //System.out.println(exploded);
+
+                    if (!exploded && meReady && enemyReady) {
+                        System.out.println("ey");
                         // y-axis movement
                         if ((sPressed) && (!wPressed)) movePlayerDown(me);
                         if ((wPressed) && (!sPressed)) movePlayerUp(me); 
@@ -185,18 +198,24 @@ public class GameCanvas extends JComponent {
                         enemy.tick();
                     
                     } else {
-                        if (fuse.isExploded && meReady) meReady = false;
-                        else if (fuse.isExploded && !meReady) continue;
+                        if (exploded && meReady) {
+                            meReady = false;
+                            ongoing = false;
+                        } else if (exploded && !meReady) continue;
                     }
 
-                    if (fuse.isExploded) {
-                        meReady = false;
+                    /*
+                    if (exploded) {
+                        //meReady = false;
                         //enemyReady = false;
-                    }
+                    } */
+
                     if (meReady) meredi.changeColor(Color.GREEN);
                     else meredi.changeColor(Color.RED);
                     if (enemyReady) themredi.changeColor(Color.GREEN);
                     else themredi.changeColor(Color.RED);
+
+                    
 
                     repaint();
                 }
@@ -228,8 +247,8 @@ public class GameCanvas extends JComponent {
         me.draw(g2d);
         enemy.draw(g2d);
 
-        if (fuse.isExploded) {
-
+        
+        if (!ongoing) {
             pButton.draw(g2d);
 
             if (!firstGame) {
@@ -280,34 +299,6 @@ public class GameCanvas extends JComponent {
         } return null;
     }
 
-    //Accessors and mutators
-    public void setEnemyReady(boolean ready) {
-        enemyReady = ready;
-    }
-
-    public boolean getMeReady(){
-        return meReady;
-    }
-
-    public boolean getColliding() {
-        return isColliding;
-    }
-
-    public boolean getMePotato() {
-        return me.getPotatoStatus();
-    }
-
-    public boolean getEnemyPotato() {
-        return enemy.getPotatoStatus();
-    }
-
-    public void setEnemyCollided (boolean b){
-        enemyCollided = b;
-    }
-
-    public void swapPotatoStatus(Player p){
-        p.changePotatoStatus();
-    }
 
     
 
@@ -344,24 +335,6 @@ public class GameCanvas extends JComponent {
     } 
     
 
-    public int meGetX() {
-        return me.getX();
-    }
-    public int meGetY() {
-        return me.getY();
-    }
-    public void enemySetX(int amt) {
-        enemy.setX(amt);
-    }
-    public void enemySetY(int amt) {
-        enemy.setY(amt);
-    }
-    public Player getMe() {
-        return me;
-    }
-    public Player getEnemy() {
-        return enemy;
-    }
 
     // dash methods
     public void dashPlayer(boolean b){
@@ -413,11 +386,12 @@ public class GameCanvas extends JComponent {
 
             addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    if (fuse.isExploded) {
+                    if (!ongoing) {
                         System.out.println("pressed");
                         startGame();
                         meReady = true;
                         firstGame = false;
+                        exploded = false;
                     }
                 }
             });
@@ -453,6 +427,68 @@ public class GameCanvas extends JComponent {
             me = new Player(1000-105, 750-105, 30, Color.RED, 0, 0, false);
             enemy = new Player(75, 75, 30, Color.BLUE, 0, 0, true);
         } 
+    }
+
+
+    //Accessors and mutators
+    public void setEnemyReady(boolean ready) {
+        enemyReady = ready;
+    }
+
+    public boolean getMeReady(){
+        return meReady;
+    }
+
+    public boolean getColliding() {
+        return isColliding;
+    }
+
+    public boolean getMePotato() {
+        return me.getPotatoStatus();
+    }
+
+    public boolean getEnemyPotato() {
+        return enemy.getPotatoStatus();
+    }
+
+    public void setEnemyCollided (boolean b){
+        enemyCollided = b;
+    }
+
+    public void swapPotatoStatus(Player p){
+        p.changePotatoStatus();
+    }
+
+    public int meGetX() {
+        return me.getX();
+    }
+
+    public int meGetY() {
+        return me.getY();
+    }
+
+    public void enemySetX(int amt) {
+        enemy.setX(amt);
+    }
+
+    public void enemySetY(int amt) {
+        enemy.setY(amt);
+    }
+
+    public Player getMe() {
+        return me;
+    }
+
+    public Player getEnemy() {
+        return enemy;
+    }
+
+    public void setExploded(boolean b) {
+        exploded = b;
+    }
+
+    public boolean getFuseExploded() {
+        return fuse.isExploded;
     }
 
 

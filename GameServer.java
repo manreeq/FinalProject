@@ -13,7 +13,7 @@ public class GameServer {
     private WriteToClient p2WriteRunnable;
     private int p1x, p1y, p2x, p2y;
     private boolean p1Ready, p2Ready;
-    private boolean p1HasPotato, p2HasPotato, p1Collided, p2Collided;
+    private boolean p1HasPotato, p2HasPotato, p1Collided, p2Collided, p1Exploded, p2Exploded, exploded;
 
     public GameServer() {
         System.out.println("Server started");
@@ -95,11 +95,13 @@ public class GameServer {
                         p1y = dataIn.readInt();
                         p1Ready = dataIn.readBoolean();
                         p1Collided = dataIn.readBoolean();
+                        p1Exploded = dataIn.readBoolean();
                     } else {
                         p2x = dataIn.readInt();
                         p2y = dataIn.readInt();
                         p2Ready = dataIn.readBoolean();
                         p2Collided = dataIn.readBoolean();
+                        p2Exploded = dataIn.readBoolean();
                     }
                     System.out.println(p1Ready);
                     System.out.println(p2Ready);
@@ -128,17 +130,22 @@ public class GameServer {
             try {
                 
                 while (true) {
+                    if (p1Exploded && p2Exploded) exploded = true;
+                    else exploded = false;
+                    
                     if (playerID == 1) {
                         dataOut.writeInt(p2x);
                         dataOut.writeInt(p2y);
                         dataOut.writeBoolean(p2Ready);
                         dataOut.writeBoolean(p2Collided);
+                        dataOut.writeBoolean(exploded);
                         dataOut.flush();
                     } else {
                         dataOut.writeInt(p1x);
                         dataOut.writeInt(p1y);
                         dataOut.writeBoolean(p1Ready);
                         dataOut.writeBoolean(p1Collided);
+                        dataOut.writeBoolean(exploded);
                         dataOut.flush();
                     }
 
