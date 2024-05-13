@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Player implements DrawingObject{
     // appearance and functionality of player
@@ -8,6 +10,8 @@ public class Player implements DrawingObject{
     private Color color;
     private int hspeed, vspeed;
     private boolean hasPotato;
+    private String direction;
+    private UserInterface up1, up2, right1, right2, left1, left2, down1, down2;
 
     public Player (int x, int y, int side, Color color, int hspeed, int vspeed, boolean hasPotato) {
         this.x = x;
@@ -17,12 +21,56 @@ public class Player implements DrawingObject{
         this.hspeed = hspeed;
         this.vspeed = vspeed;
         this.hasPotato = hasPotato;
+        direction = "down";
+        getPlayerImage();
     }
     
+    public void getPlayerImage() {
+
+            up1 = new UserInterface("/sprites/up1.png", x, y, side, side);
+            up2 = new UserInterface("/sprites/up2.png", x, y, side, side);
+            down1 = new UserInterface("/sprites/down1.png", x, y, side, side);
+            down2 = new UserInterface("/sprites/down2.png", x, y, side, side);
+            left1 = new UserInterface("/sprites/left1.png", x, y, side, side);
+            left2 = new UserInterface("/sprites/left2.png", x, y, side, side);
+            right1 = new UserInterface("/sprites/right1.png", x, y, side, side);
+            right2 = new UserInterface("/sprites/right2.png", x, y, side, side);
+            
+        }
+
+
     public void draw(Graphics2D g2d) {
         Rectangle2D.Double sq = new Rectangle2D.Double(x, y, side, side);
         g2d.setColor(color);
         g2d.fill(sq);
+
+        UserInterface sprite = null;
+
+        switch(direction) {
+            case "up":
+                sprite = up1;
+                break;
+            case "down":
+                sprite = down1;
+                break;
+            case "left":
+                sprite = left1;
+                break;
+            case "right":
+                sprite = right1;
+                break;
+        }
+        sprite.draw(g2d);
+    }
+
+    
+
+    public void setDirection(String d){
+        direction = d;
+    }
+
+    public String getDirection(){
+        return direction;
     }
 
     // what wall

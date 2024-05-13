@@ -73,7 +73,6 @@ public class GameCanvas extends JComponent {
         firstGame = true;
         meReady = false;
         enemyReady = false;
-        touchTime = 3;
         //entities = new ArrayList<>();
 
         //stoneTile bg
@@ -193,6 +192,9 @@ public class GameCanvas extends JComponent {
                     Thread.sleep(5);
 
                     //System.out.println(exploded);
+                    me.getPlayerImage();
+                    enemy.getPlayerImage();
+                    System.out.println(enemy.getDirection());
 
                     if (!exploded && meReady && enemyReady) {
                         // y-axis movement
@@ -209,10 +211,11 @@ public class GameCanvas extends JComponent {
 
                         isColliding = me.collidePlayer(enemy);
 
-                        if ((isColliding) && potatoSwapCooldown == 0 && (enemyCollided)) {
+                        if ((isColliding) && potatoSwapCooldown == 0 && (enemyCollided)) { 
                             me.changePotatoStatus();
                             enemy.changePotatoStatus();
                             potatoSwapCooldown = 150;
+
                         }
 
                         if (potatoSwapCooldown > 0) potatoSwapCooldown -= 1;
@@ -345,6 +348,7 @@ public class GameCanvas extends JComponent {
     public void movePlayerUp(Player p){
         if (!(wallCollision(p) == "up") && !(playerCollision(p) == "up")) {
             p.setVSpeed(-p1Speed);
+            p.setDirection("up");
             repaint();
         } else {
             p.setVSpeed(0);
@@ -354,6 +358,7 @@ public class GameCanvas extends JComponent {
     public void movePlayerDown(Player p){
         if (!(wallCollision(p) == "down") && !(playerCollision(p) == "down")) {
             p.setVSpeed(p1Speed);
+            p.setDirection("down");
             repaint();
         } else p.setVSpeed(0);
     }
@@ -361,6 +366,7 @@ public class GameCanvas extends JComponent {
     public void movePlayerLeft(Player p){
         if (!(wallCollision(p) == "left") && !(playerCollision(p) == "left")) {
             p.setHSpeed(-p1Speed);
+            p.setDirection("left");
             repaint();
         } else p.setHSpeed(0);
     }
@@ -368,6 +374,7 @@ public class GameCanvas extends JComponent {
     public void movePlayerRight(Player p){
         if (!(wallCollision(p) == "right") && !(playerCollision(p) == "right")) {
             p.setHSpeed(p1Speed);
+            p.setDirection("right");
             repaint();
         } else p.setHSpeed(0);
     } 
