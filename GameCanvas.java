@@ -146,7 +146,7 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     // y-axis movement
-                    System.out.println(meReady);
+                    Thread.sleep(5);
                     if ((sPressed) && (!wPressed)) movePlayerDown(me);
                     if ((wPressed) && (!sPressed)) movePlayerUp(me); 
                     if (!(wPressed || sPressed)) stopMovingY(me);
@@ -193,7 +193,6 @@ public class GameCanvas extends JComponent {
                     }
 
                     repaint();
-                    Thread.sleep(5);
                 }
 
             } catch(InterruptedException e) {

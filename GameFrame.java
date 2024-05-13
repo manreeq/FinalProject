@@ -231,7 +231,12 @@ public class GameFrame {
         public void run() {
             try {
                 while (true) {
-                    System.out.println();
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        System.out.println("InterruptedException at RFS run()");
+                    } 
+                    
                     if (canvas != null) {
                         canvas.enemySetX(dataIn.readInt());
                         canvas.enemySetY(dataIn.readInt());
