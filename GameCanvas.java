@@ -194,7 +194,6 @@ public class GameCanvas extends JComponent {
                     //System.out.println(exploded);
                     me.getPlayerImage();
                     enemy.getPlayerImage();
-                    System.out.println(enemy.getDirection());
 
                     if (!exploded && meReady && enemyReady) {
                         // y-axis movement
@@ -535,6 +534,23 @@ public class GameCanvas extends JComponent {
 
     public boolean getFuseExploded() {
         return fuse.isExploded;
+    }
+
+    public void setEnemyDirection(int i) {
+        if (i == 1) enemy.setDirection("up");
+        if (i == 2) enemy.setDirection("down");
+        if (i == 3) enemy.setDirection("left");
+        if (i == 4) enemy.setDirection("right");
+    }
+
+    public int meGetDirection(){
+        int x = 0;
+        if (me.getDirection() == "up") x = 1;
+        if (me.getDirection() == "down") x = 2;
+        if (me.getDirection() == "left") x = 3;
+        if (me.getDirection() == "right") x = 4;
+
+        return x;
     }
 
 

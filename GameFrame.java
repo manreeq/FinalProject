@@ -237,9 +237,10 @@ public class GameFrame {
                     if (canvas != null) {
                         canvas.enemySetX(dataIn.readInt());
                         canvas.enemySetY(dataIn.readInt());
+                        //canvas.setEnemyDirection(dataIn.readInt()); 
                         canvas.setEnemyReady(dataIn.readBoolean());
                         canvas.setEnemyCollided(dataIn.readBoolean());
-                        canvas.setExploded(dataIn.readBoolean());
+                        canvas.setExploded(dataIn.readBoolean());                       
                     }
                 }
 
@@ -283,9 +284,10 @@ public class GameFrame {
                     if (canvas != null) {
                         dataOut.writeInt(canvas.meGetX());
                         dataOut.writeInt(canvas.meGetY());
+                        //dataOut.write(canvas.meGetDirection()); 
                         dataOut.writeBoolean(canvas.getMeReady());
                         dataOut.writeBoolean(canvas.getColliding());
-                        dataOut.writeBoolean(canvas.getFuseExploded());;
+                        dataOut.writeBoolean(canvas.getFuseExploded());
                         dataOut.flush();
                     }
                     
