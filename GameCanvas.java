@@ -10,10 +10,7 @@ import java.util.*;
 public class GameCanvas extends JComponent {
     
     private ArrayList<Wall> walls;
-    //private Player[] players;
 
-    //private Timer timer;
-    private int delay;
     private Color wc;
     
     private Wall bNorth;
@@ -59,12 +56,13 @@ public class GameCanvas extends JComponent {
 
     private boolean meReady, enemyReady;
 
+    private Circle meredi, themredi;
+
 
     public GameCanvas(int id) {
         playerID = id;
         p1Speed = 1;
         this.setPreferredSize(new Dimension(1000, 750));
-        delay = 5;
         wc = Color.BLACK;
         walls = new ArrayList<>();
         firstGame = true;
@@ -112,6 +110,9 @@ public class GameCanvas extends JComponent {
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
 
+        meredi = new Circle(20, 500, 40, Color.RED);
+        themredi = new Circle(20, 560, 40, Color.RED);
+
         //potato indicator
         potatoIndicator = new Circle(20, 80, 40, Color.GREEN);
 
@@ -145,24 +146,20 @@ public class GameCanvas extends JComponent {
         public void run() {
             try {
                 while (true) {
-                    // y-axis movement
-                    Thread.sleep(5);
-                    if ((sPressed) && (!wPressed)) movePlayerDown(me);
-                    if ((wPressed) && (!sPressed)) movePlayerUp(me); 
-                    if (!(wPressed || sPressed)) stopMovingY(me);
-
-                    // x-axis movement
-                    if ((dPressed) && (!aPressed)) movePlayerRight(me);
-                    if ((aPressed) && (!dPressed)) movePlayerLeft(me);
-                    if (!(aPressed || dPressed)) stopMovingX(me);
                     
-                    if (fuse.isExploded) {
-                        meReady = false;
-                        enemyReady = false;
-                    }
+                    Thread.sleep(5);
 
-                    if (!(fuse.isExploded) && meReady && enemyReady) 
-                    {
+                    if (!(fuse.isExploded) && meReady && enemyReady) {
+                        // y-axis movement
+                        if ((sPressed) && (!wPressed)) movePlayerDown(me);
+                        if ((wPressed) && (!sPressed)) movePlayerUp(me); 
+                        if (!(wPressed || sPressed)) stopMovingY(me);
+
+                        // x-axis movement
+                        if ((dPressed) && (!aPressed)) movePlayerRight(me);
+                        if ((aPressed) && (!dPressed)) movePlayerLeft(me);
+                        if (!(aPressed || dPressed)) stopMovingX(me);
+
                         fuse.tick();
 
                         isColliding = me.collidePlayer(enemy);
@@ -192,6 +189,15 @@ public class GameCanvas extends JComponent {
                         else if (fuse.isExploded && !meReady) continue;
                     }
 
+                    if (fuse.isExploded) {
+                        meReady = false;
+                        //enemyReady = false;
+                    }
+                    if (meReady) meredi.changeColor(Color.GREEN);
+                    else meredi.changeColor(Color.RED);
+                    if (enemyReady) themredi.changeColor(Color.GREEN);
+                    else themredi.changeColor(Color.RED);
+
                     repaint();
                 }
 
@@ -208,8 +214,6 @@ public class GameCanvas extends JComponent {
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
         
-        //doesnt get used
-        Stroke defaultStroke = g2d.getStroke();
         g2d.setStroke(new BasicStroke((float) 15.0, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
         for (Wall w: walls) w.draw(g2d);
@@ -218,6 +222,8 @@ public class GameCanvas extends JComponent {
         fuse.draw(g2d);
         dashIndicator.draw(g2d);
         potatoIndicator.draw(g2d);
+        meredi.draw(g2d);
+        themredi.draw(g2d);
 
         me.draw(g2d);
         enemy.draw(g2d);
@@ -408,12 +414,10 @@ public class GameCanvas extends JComponent {
             addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     if (fuse.isExploded) {
+                        System.out.println("pressed");
                         startGame();
                         meReady = true;
                         firstGame = false;
-                        System.out.println(t.isAlive());
-                        System.out.println(meReady);
-                        System.out.println(enemyReady);
                     }
                 }
             });

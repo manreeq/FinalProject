@@ -103,6 +103,7 @@ public class GameServer {
                     }
                     System.out.println(p1Ready);
                     System.out.println(p2Ready);
+                    System.out.println();
                 }
 
             } catch (IOException e) {

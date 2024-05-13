@@ -147,9 +147,6 @@ public class GameFrame {
         AbstractAction dash = new AbstractAction() {
             public void actionPerformed(ActionEvent ae){
                 canvas.dashPlayer(goingDiagonal());
-                System.out.println(amtKeysX + "x");
-                System.out.println(amtKeysY + "y");
-                System.out.println();
             }
         };
 

@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.*;

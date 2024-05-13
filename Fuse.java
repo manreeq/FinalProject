@@ -29,7 +29,6 @@ public class Fuse {
             endy -= 0.05;
             isExploded = false;
         } else {
-            System.out.println("BOOM");
             isExploded = true;
         }
     }
