@@ -59,6 +59,8 @@ public class GameCanvas extends JComponent {
 
     private Circle meredi, themredi;
 
+    private UserInterface waitingIndicator;
+
 
     public GameCanvas(int id) {
         playerID = id;
@@ -111,12 +113,15 @@ public class GameCanvas extends JComponent {
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
 
+        String s;
         if (playerID == 1) {
             meredi = new Circle(20, 500, 40, Color.RED);
             themredi = new Circle(20, 560, 40, Color.RED);
+            s = "p1Ready.png";
         } else {
             themredi = new Circle(20, 500, 40, Color.RED);
             meredi = new Circle(20, 560, 40, Color.RED);
+            s = "p2Ready.png";
         }
         
 
@@ -124,6 +129,9 @@ public class GameCanvas extends JComponent {
         potatoIndicator = new Circle(20, 80, 40, Color.GREEN);
 
         pButton = new PlayButton(300, 250, 400, 200);
+
+
+        waitingIndicator = new UserInterface(s, 0, 0, 400, 200);
 
         createPlayers();
         //starts the game loop
@@ -162,7 +170,6 @@ public class GameCanvas extends JComponent {
                     //System.out.println(exploded);
 
                     if (!exploded && meReady && enemyReady) {
-                        System.out.println("ey");
                         // y-axis movement
                         if ((sPressed) && (!wPressed)) movePlayerDown(me);
                         if ((wPressed) && (!sPressed)) movePlayerUp(me); 
@@ -201,7 +208,10 @@ public class GameCanvas extends JComponent {
                         if (exploded && meReady) {
                             meReady = false;
                             ongoing = false;
-                        } else if (exploded && !meReady) continue;
+                        } else if (exploded && !meReady){
+                            repaint();
+                            continue;
+                        } 
                     }
 
                     /*
@@ -216,7 +226,7 @@ public class GameCanvas extends JComponent {
                     else themredi.changeColor(Color.RED);
 
                     
-
+                    System.out.println(ongoing);
                     repaint();
                 }
 
@@ -246,10 +256,15 @@ public class GameCanvas extends JComponent {
 
         me.draw(g2d);
         enemy.draw(g2d);
-
         
         if (!ongoing) {
-            pButton.draw(g2d);
+            //if (meReady) waitingIndicator.draw(g2d);
+            //else pButton.draw(g2d);
+
+            //System.out.println(meReady);
+            if (!meReady) pButton.draw(g2d);
+            else waitingIndicator.draw(g2d);
+            
 
             if (!firstGame) {
                 if (meHasPotato) {
@@ -259,8 +274,7 @@ public class GameCanvas extends JComponent {
                     //show win message
                 }
             }
-
-        }
+        } //else if (ongoing && exploded) waitingIndicator.draw(g2d);
     }
 
     public String wallCollision(Player p) {
