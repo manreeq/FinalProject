@@ -117,10 +117,10 @@ public class GameCanvas extends JComponent {
 
         pButton = new PlayButton(300, 250, 400, 200);
 
+        createPlayers();
         //starts the game loop
         t = new MyThread();
         t.start();
-        createPlayers();
 
     }
 
@@ -146,7 +146,7 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     // y-axis movement
-                    
+                    System.out.println(meReady);
                     if ((sPressed) && (!wPressed)) movePlayerDown(me);
                     if ((wPressed) && (!sPressed)) movePlayerUp(me); 
                     if (!(wPressed || sPressed)) stopMovingY(me);
