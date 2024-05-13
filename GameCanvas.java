@@ -33,11 +33,11 @@ public class GameCanvas extends JComponent {
     //bomb things
     private Circle bomb;
     private Fuse fuse;
-    private boolean meHasPotato;
     private Circle potatoIndicator;
     
     private int potatoSwapCooldown;
     private boolean isColliding;
+    private int touchTime;
     private boolean enemyCollided;
     private boolean exploded;
 
@@ -59,7 +59,8 @@ public class GameCanvas extends JComponent {
 
     private Circle meredi, themredi;
 
-    private UserInterface waitingIndicator, winImage, loseImage;
+    private UserInterface stoneTile, waitingIndicator, winImage, loseImage;
+    private ArrayList<UserInterface> tiles;
 
 
     public GameCanvas(int id) {
@@ -68,10 +69,33 @@ public class GameCanvas extends JComponent {
         this.setPreferredSize(new Dimension(1000, 750));
         wc = Color.BLACK;
         walls = new ArrayList<>();
+        tiles = new ArrayList<>();
         firstGame = true;
         meReady = false;
         enemyReady = false;
+        touchTime = 3;
         //entities = new ArrayList<>();
+
+        //stoneTile bg
+        int col = 0;
+        int row = 0;
+        int tempX = 0;
+        int tempY = 0; 
+
+        while (col < 20 && row < 15) {
+            stoneTile = new UserInterface("stoneTile.png", tempX, tempY, 50, 50);
+            tiles.add(stoneTile);
+            col++;
+            tempX += 50;
+
+            if (col == 20) {
+                col = 0;
+                tempX = 0;
+                row++;
+                tempY += 50;
+                }
+            }
+
 
         //border walls
         bNorth = new Wall(0, -30, 1000, 40, wc);
@@ -108,7 +132,7 @@ public class GameCanvas extends JComponent {
 
         //bomb parts
         bomb = new Circle(900, 20, 60, Color.GRAY);
-        fuse = new Fuse(930, 50, 930, 100);
+        fuse = new Fuse(930, 50, 930, 300);
 
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
@@ -246,6 +270,8 @@ public class GameCanvas extends JComponent {
         
         g2d.setStroke(new BasicStroke((float) 15.0, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
+        for (UserInterface t: tiles) t.draw(g2d);
+    
         for (Wall w: walls) w.draw(g2d);
 
         bomb.draw(g2d);
@@ -322,7 +348,6 @@ public class GameCanvas extends JComponent {
             repaint();
         } else {
             p.setVSpeed(0);
-            //me.changePotatoStatus();
         }
     }
 
