@@ -59,7 +59,7 @@ public class GameCanvas extends JComponent {
 
     private Circle meredi, themredi;
 
-    private UserInterface waitingIndicator;
+    private UserInterface waitingIndicator, winImage, loseImage;
 
 
     public GameCanvas(int id) {
@@ -108,7 +108,7 @@ public class GameCanvas extends JComponent {
 
         //bomb parts
         bomb = new Circle(900, 20, 60, Color.GRAY);
-        fuse = new Fuse(930, 50, 930, 70);
+        fuse = new Fuse(930, 50, 930, 100);
 
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
@@ -132,6 +132,8 @@ public class GameCanvas extends JComponent {
 
 
         waitingIndicator = new UserInterface(s, 0, 0, 400, 200);
+        winImage = new UserInterface("winner.png", 350, 190, 300, 60);
+        loseImage = new UserInterface("loser.png", 350, 190, 300, 60);
 
         createPlayers();
         //starts the game loop
@@ -162,7 +164,6 @@ public class GameCanvas extends JComponent {
         public void run() {
             try {
                 while (true) {
-                    
                     
 
                     Thread.sleep(5);
@@ -260,21 +261,19 @@ public class GameCanvas extends JComponent {
         if (!ongoing) {
             //if (meReady) waitingIndicator.draw(g2d);
             //else pButton.draw(g2d);
-
+            
             //System.out.println(meReady);
             if (!meReady) pButton.draw(g2d);
             else waitingIndicator.draw(g2d);
+            //winImage.draw(g2d);
             
 
-            if (!firstGame) {
-                if (meHasPotato) {
-                    //show lose message
-                }
-                else {
-                    //show win message
-                }
-            }
         } //else if (ongoing && exploded) waitingIndicator.draw(g2d);
+
+        if ((!ongoing) && (!firstGame)) {
+            if (!me.getPotatoStatus()) winImage.draw(g2d);
+            else loseImage.draw(g2d);
+        }
     }
 
     public String wallCollision(Player p) {
@@ -421,6 +420,7 @@ public class GameCanvas extends JComponent {
             } catch(Exception e) {
                 System.out.println("Exception at imporImg");
             }
+            InputStream is2 = getClass().getResourceAsStream("winner.png");
         }
     
         public void draw(Graphics2D g2d) {
