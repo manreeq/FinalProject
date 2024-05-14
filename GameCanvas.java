@@ -54,6 +54,7 @@ public class GameCanvas extends JComponent {
     private boolean meReady, enemyReady, ongoing, collided;
 
     private UserInterface stoneTile, waitingIndicator, winImage, loseImage;
+    private UserInterface enemyWaiting;
     private ArrayList<UserInterface> tiles;
 
 
@@ -137,14 +138,22 @@ public class GameCanvas extends JComponent {
         potatoIndicator = new Circle(20, 80, 40, Color.GREEN);
         potatoIndicatorImage = new UserInterface("potato.png", 27, 87, 25, 25);
 
-        pButton = new PlayButton(300, 250, 400, 200);
+        
 
         String s;
-        if (playerID == 1) s = "p1Ready.png";
-        else s = "p2Ready.png";
+        String a;
+        if (playerID == 1) {
+            s = "p1Ready.png";
+            a = "p2ReadyWaiting.png";
+        } else {
+            s = "p2Ready.png";
+            a = "p1ReadyWaiting.png";
+        }
+        pButton = new PlayButton(300, 250, 400, 200);
         waitingIndicator = new UserInterface(s, 300, 250, 400, 200);
         winImage = new UserInterface("winner.png", 350, 190, 300, 60);
         loseImage = new UserInterface("loser.png", 350, 190, 300, 60);
+        enemyWaiting = new UserInterface(a, 300, 190, 400, 100);
 
         createPlayers();
         //starts the game loop
@@ -266,17 +275,14 @@ public class GameCanvas extends JComponent {
         enemy.draw(g2d);
         
         if (!ongoing) {
-            //if (meReady) waitingIndicator.draw(g2d);
-            //else pButton.draw(g2d);
             pButton.draw(g2d);
-
-            //winImage.draw(g2d);
-            
         } else if (ongoing && meReady && !enemyReady) waitingIndicator.draw(g2d);
 
-        if ((!ongoing) && (!firstGame)) {
+        if (!ongoing && !firstGame && (!meReady & !enemyReady)) {
             if (!me.getPotatoStatus()) winImage.draw(g2d);
             else loseImage.draw(g2d);
+        } else if (!ongoing && (!meReady & enemyReady)) {
+            enemyWaiting.draw(g2d);
         }
     }
 
