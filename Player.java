@@ -1,22 +1,19 @@
 import java.awt.*;
-import java.awt.geom.*;
 
 public class Player implements DrawingObject{
     // appearance and functionality of player
 
     private int side, x, y;
-    private Color color;
     private int hspeed, vspeed;
     private boolean hasPotato;
     private String direction;
     private UserInterface up1, up2, right1, right2, left1, left2, down1, down2;
     UserInterface sprite;
 
-    public Player (int x, int y, int side, Color color, int hspeed, int vspeed, boolean hasPotato) {
+    public Player (int x, int y, int side, int hspeed, int vspeed, boolean hasPotato) {
         this.x = x;
         this.y = y;
         this.side = side;
-        this.color = color;
         this.hspeed = hspeed;
         this.vspeed = vspeed;
         this.hasPotato = hasPotato;
@@ -55,10 +52,6 @@ public class Player implements DrawingObject{
                 sprite = right1;
                 break;
         }
-        
-        Rectangle2D.Double sq = new Rectangle2D.Double(x, y, side, side);
-        g2d.setColor(color);
-        g2d.fill(sq);
         sprite.draw(g2d);
     }
 

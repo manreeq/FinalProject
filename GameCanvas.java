@@ -1,7 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.io.*;
@@ -37,10 +36,7 @@ public class GameCanvas extends JComponent {
     
     private int potatoSwapCooldown;
     private boolean isColliding;
-    private int touchTime;
     private boolean exploded;
-
-    private double timeLeft = 250;
 
     //dash things
     private int dashDuration, dashCooldown;
@@ -56,13 +52,12 @@ public class GameCanvas extends JComponent {
 
     private boolean meReady, enemyReady, ongoing, collided;
 
-    private Circle meredi, themredi;
-
     private UserInterface stoneTile, waitingIndicator, winImage, loseImage;
     private ArrayList<UserInterface> tiles;
 
 
     public GameCanvas(int id) {
+        //ongoing = false;
         playerID = id;
         p1Speed = 1;
         this.setPreferredSize(new Dimension(1000, 750));
@@ -134,17 +129,6 @@ public class GameCanvas extends JComponent {
 
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
-
-        String s;
-        if (playerID == 1) {
-            meredi = new Circle(20, 500, 40, Color.RED);
-            themredi = new Circle(20, 560, 40, Color.RED);
-            s = "p1Ready.png";
-        } else {
-            themredi = new Circle(20, 500, 40, Color.RED);
-            meredi = new Circle(20, 560, 40, Color.RED);
-            s = "p2Ready.png";
-        }
         
 
         //potato indicator
@@ -152,8 +136,10 @@ public class GameCanvas extends JComponent {
 
         pButton = new PlayButton(300, 250, 400, 200);
 
-
-        waitingIndicator = new UserInterface(s, 0, 0, 400, 200);
+        String s;
+        if (playerID == 1) s = "p1Ready.png";
+        else s = "p2Ready.png";
+        waitingIndicator = new UserInterface(s, 300, 250, 400, 200);
         winImage = new UserInterface("winner.png", 350, 190, 300, 60);
         loseImage = new UserInterface("loser.png", 350, 190, 300, 60);
 
@@ -189,9 +175,8 @@ public class GameCanvas extends JComponent {
             try {
                 while (true) {
                     
-
+                    
                     Thread.sleep(5);
-
                     //System.out.println(exploded);
                     //me.getPlayerImage();
                     //enemy.getPlayerImage();
@@ -236,22 +221,12 @@ public class GameCanvas extends JComponent {
                         if (exploded && meReady) {
                             meReady = false;
                             ongoing = false;
+                            repaint();
                         } else if (exploded && !meReady){
                             repaint();
                             continue;
                         } 
                     }
-
-                    /*
-                    if (exploded) {
-                        //meReady = false;
-                        //enemyReady = false;
-                    } */
-
-                    if (meReady) meredi.changeColor(Color.GREEN);
-                    else meredi.changeColor(Color.RED);
-                    if (enemyReady) themredi.changeColor(Color.GREEN);
-                    else themredi.changeColor(Color.RED);
 
                     repaint();
                 }
@@ -279,8 +254,6 @@ public class GameCanvas extends JComponent {
         fuse.draw(g2d);
         dashIndicator.draw(g2d);
         potatoIndicator.draw(g2d);
-        meredi.draw(g2d);
-        themredi.draw(g2d);
 
         me.draw(g2d);
         enemy.draw(g2d);
@@ -288,14 +261,11 @@ public class GameCanvas extends JComponent {
         if (!ongoing) {
             //if (meReady) waitingIndicator.draw(g2d);
             //else pButton.draw(g2d);
-            
-            //System.out.println(meReady);
-            if (!meReady) pButton.draw(g2d);
-            else waitingIndicator.draw(g2d);
+            pButton.draw(g2d);
+
             //winImage.draw(g2d);
             
-
-        } //else if (ongoing && exploded) waitingIndicator.draw(g2d);
+        } else if (ongoing && meReady && !enemyReady) waitingIndicator.draw(g2d);
 
         if ((!ongoing) && (!firstGame)) {
             if (!me.getPotatoStatus()) winImage.draw(g2d);
@@ -450,7 +420,6 @@ public class GameCanvas extends JComponent {
             } catch(Exception e) {
                 System.out.println("Exception at imporImg");
             }
-            InputStream is2 = getClass().getResourceAsStream("winner.png");
         }
     
         public void draw(Graphics2D g2d) {
@@ -465,11 +434,11 @@ public class GameCanvas extends JComponent {
 
     public void createPlayers() {
         if (playerID == 1) {
-            me = new Player(75, 75, 30, Color.BLUE, 0, 0, true);
-            enemy = new Player(1000-105, 750-105, 30, Color.RED, 0, 0, false);
+            me = new Player(75, 75, 30, 0, 0, true);
+            enemy = new Player(1000-105, 750-105, 30, 0, 0, false);
         } else {
-            me = new Player(1000-105, 750-105, 30, Color.RED, 0, 0, false);
-            enemy = new Player(75, 75, 30, Color.BLUE, 0, 0, true);
+            me = new Player(1000-105, 750-105, 30, 0, 0, false);
+            enemy = new Player(75, 75, 30, 0, 0, true);
         } 
     }
 

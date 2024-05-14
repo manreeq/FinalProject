@@ -13,7 +13,7 @@ public class GameServer {
     private WriteToClient p2WriteRunnable;
     private int p1x, p1y, p2x, p2y;
     private boolean p1Ready, p2Ready;
-    private boolean p1HasPotato, p2HasPotato, p1Collided, p2Collided, p1Exploded, p2Exploded, exploded;
+    private boolean p1Collided, p2Collided, p1Exploded, p2Exploded, exploded;
     private int p1Direction, p2Direction;
     private boolean collided;
 
