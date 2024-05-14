@@ -30,7 +30,7 @@ public class GameCanvas extends JComponent {
     private Thread t;
 
     //bomb things
-    private Circle bomb;
+    private UserInterface potatoBomb, potatoIndicatorImage;
     private Fuse fuse;
     private Circle potatoIndicator;
     
@@ -41,6 +41,7 @@ public class GameCanvas extends JComponent {
     //dash things
     private int dashDuration, dashCooldown;
     private Circle dashIndicator;
+    private UserInterface dashImage;
 
     //keybinds
     private boolean wPressed, aPressed, sPressed, dPressed, firstGame;
@@ -124,15 +125,17 @@ public class GameCanvas extends JComponent {
         walls.add(r2);
 
         //bomb parts
-        bomb = new Circle(900, 20, 60, Color.GRAY);
-        fuse = new Fuse(930, 50, 930, 300);
+        potatoBomb = new UserInterface("potato.png", 870, -10, 120, 120);
+        fuse = new Fuse(930, 80, 930, 330);
 
         //dash indicator
         dashIndicator = new Circle(20, 20, 40, Color.GREEN);
+        dashImage = new UserInterface("dash.png", 27, 27, 25, 25);
         
 
         //potato indicator
         potatoIndicator = new Circle(20, 80, 40, Color.GREEN);
+        potatoIndicatorImage = new UserInterface("potato.png", 27, 87, 25, 25);
 
         pButton = new PlayButton(300, 250, 400, 200);
 
@@ -249,11 +252,15 @@ public class GameCanvas extends JComponent {
         for (UserInterface t: tiles) t.draw(g2d);
     
         for (Wall w: walls) w.draw(g2d);
-
-        bomb.draw(g2d);
+        
         fuse.draw(g2d);
+        potatoBomb.draw(g2d);
+
         dashIndicator.draw(g2d);
+        dashImage.draw(g2d);
+
         potatoIndicator.draw(g2d);
+        potatoIndicatorImage.draw(g2d);
 
         me.draw(g2d);
         enemy.draw(g2d);

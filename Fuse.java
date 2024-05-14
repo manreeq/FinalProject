@@ -19,7 +19,7 @@ public class Fuse {
         Path2D.Double fuse = new Path2D.Double();
         fuse.moveTo(startx, starty);
         fuse.lineTo(endx, endy);
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.GRAY);
         g2d.draw(fuse);
     }
 

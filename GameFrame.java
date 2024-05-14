@@ -2,6 +2,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class GameFrame {
 
@@ -197,7 +198,12 @@ public class GameFrame {
 
     public void connectToServer() {
         try {
-            socket = new Socket("localhost", 23307);
+            String host = "";
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("IP Adress : ");
+            host = scanner.nextLine();
+
+            socket = new Socket(host, 23307);
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             playerID = in.readInt();
