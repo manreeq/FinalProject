@@ -17,7 +17,12 @@ public class UserInterface extends JComponent {
         this.x = x;
         this.y = y;
         importImg();
-        img = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+        try {
+            img = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+        } catch (Exception e) {
+            System.out.println(fileName);
+        }
+        
     }
 
     private void importImg() {

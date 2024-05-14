@@ -27,14 +27,14 @@ public class Player implements DrawingObject{
     
     public void getPlayerImage() {
 
-            up1 = new UserInterface("/sprites/up1.png", x, y, side, side);
-            up2 = new UserInterface("/sprites/up2.png", x, y, side, side);
-            down1 = new UserInterface("/sprites/down1.png", x, y, side, side);
-            down2 = new UserInterface("/sprites/down2.png", x, y, side, side);
-            left1 = new UserInterface("/sprites/left1.png", x, y, side, side);
-            left2 = new UserInterface("/sprites/left2.png", x, y, side, side);
-            right1 = new UserInterface("/sprites/right1.png", x, y, side, side);
-            right2 = new UserInterface("/sprites/right2.png", x, y, side, side);
+            up1 = new UserInterface("up1.png", x, y, side, side);
+            up2 = new UserInterface("up2.png", x, y, side, side);
+            down1 = new UserInterface("down1.png", x, y, side, side);
+            down2 = new UserInterface("down2.png", x, y, side, side);
+            left1 = new UserInterface("left1.png", x, y, side, side);
+            left2 = new UserInterface("left2.png", x, y, side, side);
+            right1 = new UserInterface("right1.png", x, y, side, side);
+            right2 = new UserInterface("right2.png", x, y, side, side);
             
         }
 

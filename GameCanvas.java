@@ -65,7 +65,7 @@ public class GameCanvas extends JComponent {
 
     public GameCanvas(int id) {
         playerID = id;
-        p1Speed = 1;
+        p1Speed = 10;
         this.setPreferredSize(new Dimension(1000, 750));
         wc = Color.BLACK;
         walls = new ArrayList<>();
