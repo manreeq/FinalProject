@@ -38,7 +38,6 @@ public class GameCanvas extends JComponent {
     private int potatoSwapCooldown;
     private boolean isColliding;
     private int touchTime;
-    private boolean enemyCollided;
     private boolean exploded;
 
     private double timeLeft = 250;
@@ -55,7 +54,7 @@ public class GameCanvas extends JComponent {
     private Player enemy;
     private int playerID;
 
-    private boolean meReady, enemyReady, ongoing;
+    private boolean meReady, enemyReady, ongoing, collided;
 
     private Circle meredi, themredi;
 
@@ -166,6 +165,8 @@ public class GameCanvas extends JComponent {
     }
 
     public void startGame() {
+        System.out.println("tite");
+        
         if (playerID == 1) {
             me.setX(75); me.setY(75);
             enemy.setX(1000-105); enemy.setY(750-105);
@@ -192,8 +193,8 @@ public class GameCanvas extends JComponent {
                     Thread.sleep(5);
 
                     //System.out.println(exploded);
-                    me.getPlayerImage();
-                    enemy.getPlayerImage();
+                    //me.getPlayerImage();
+                    //enemy.getPlayerImage();
 
                     if (!exploded && meReady && enemyReady) {
                         // y-axis movement
@@ -210,7 +211,7 @@ public class GameCanvas extends JComponent {
 
                         isColliding = me.collidePlayer(enemy);
 
-                        if ((isColliding) && potatoSwapCooldown == 0 && (enemyCollided)) { 
+                        if (collided && potatoSwapCooldown == 0) { 
                             me.changePotatoStatus();
                             enemy.changePotatoStatus();
                             potatoSwapCooldown = 150;
@@ -494,8 +495,8 @@ public class GameCanvas extends JComponent {
         return enemy.getPotatoStatus();
     }
 
-    public void setEnemyCollided (boolean b){
-        enemyCollided = b;
+    public void setCollided (boolean b){
+        collided = b;
     }
 
     public void swapPotatoStatus(Player p){

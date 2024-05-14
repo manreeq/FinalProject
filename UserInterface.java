@@ -39,4 +39,17 @@ public class UserInterface extends JComponent {
         
     }
 
+    public void tick(int h, int v) {
+        x += h;
+        y += v;
+    }
+
+    public void setX(int amt) {
+        x = amt;
+    }
+
+    public void setY(int amt) {
+        y = amt;
+    }
+
 }

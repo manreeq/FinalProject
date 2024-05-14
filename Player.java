@@ -10,6 +10,7 @@ public class Player implements DrawingObject{
     private boolean hasPotato;
     private String direction;
     private UserInterface up1, up2, right1, right2, left1, left2, down1, down2;
+    UserInterface sprite;
 
     public Player (int x, int y, int side, Color color, int hspeed, int vspeed, boolean hasPotato) {
         this.x = x;
@@ -20,13 +21,13 @@ public class Player implements DrawingObject{
         this.vspeed = vspeed;
         this.hasPotato = hasPotato;
         direction = "down";
+        sprite = null;
         getPlayerImage();
     }
     
     public void getPlayerImage() {
 
             System.out.println("tiute");
-            /*
             up1 = new UserInterface("up1.png", x, y, side, side);
             up2 = new UserInterface("up2.png", x, y, side, side);
             down1 = new UserInterface("down1.png", x, y, side, side);
@@ -35,17 +36,11 @@ public class Player implements DrawingObject{
             left2 = new UserInterface("left2.png", x, y, side, side);
             right1 = new UserInterface("right1.png", x, y, side, side);
             right2 = new UserInterface("right2.png", x, y, side, side);
-             */
+            
         }
 
 
     public void draw(Graphics2D g2d) {
-        Rectangle2D.Double sq = new Rectangle2D.Double(x, y, side, side);
-        g2d.setColor(color);
-        g2d.fill(sq);
-
-        UserInterface sprite = null;
-
         switch(direction) {
             case "up":
                 sprite = up1;
@@ -60,7 +55,27 @@ public class Player implements DrawingObject{
                 sprite = right1;
                 break;
         }
+        
+        Rectangle2D.Double sq = new Rectangle2D.Double(x, y, side, side);
+        g2d.setColor(color);
+        g2d.fill(sq);
         sprite.draw(g2d);
+    }
+
+    public void tick() {
+        
+        x += hspeed;
+        y += vspeed;
+
+        up1.tick(hspeed, vspeed);
+        up2.tick(hspeed, vspeed);
+        right1.tick(hspeed, vspeed);
+        right2.tick(hspeed, vspeed);
+        left1.tick(hspeed, vspeed);
+        left2.tick(hspeed, vspeed);
+        down1.tick(hspeed, vspeed);
+        down2.tick(hspeed, vspeed);
+        //System.out.println("tite");
     }
 
     
@@ -134,16 +149,30 @@ public class Player implements DrawingObject{
 
 
     //movement methods
-    public void tick() {
-        x += hspeed;
-        y += vspeed;
-        //System.out.println("tite");
-    }
+    
     public void setX(int x) {
         this.x = x;
+        up1.setX(x);
+        up2.setX(x);
+        right1.setX(x);
+        right2.setX(x);
+        left1.setX(x);
+        left2.setX(x);
+        down1.setX(x);
+        down2.setX(x);
+             
+        
     }
     public void setY(int y) {
         this.y = y;
+        up1.setY(y);
+        up2.setY(y);
+        right1.setY(y);
+        right2.setY(y);
+        left1.setY(y);
+        left2.setY(y);
+        down1.setY(y);
+        down2.setY(y);
     }
     public void setHSpeed(int hspeed) {
         this.hspeed = hspeed;
