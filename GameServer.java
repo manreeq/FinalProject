@@ -1,6 +1,30 @@
+/**
+	This is a template for a Java file.
+	
+	@author Gabriel P. Hermosura (233080)
+    @author Evan Sebastian M. Garcia (232776)
+	@version 14 May 2024
+	
+	I have not discussed the Java language code in my program 
+	with anyone other than my instructor or the teaching assistants 
+	assigned to this course.
+
+	I have not used Java language code obtained from another student, 
+	or any other unauthorized source, either modified or unmodified.
+
+	If any Java language code or documentation used in my program 
+	was obtained from another source, such as a textbook or website, 
+	that has been clearly noted with a proper citation in the comments 
+	of my program.
+**/
+
 import java.io.*;
 import java.net.*;
 
+/**
+ * This class is for the server of the game where both players connect to in order 
+ * to send data to each other
+ */
 public class GameServer {
     
     private ServerSocket ss;
@@ -17,6 +41,9 @@ public class GameServer {
     private int p1Direction, p2Direction;
     private boolean collided;
 
+    /**
+     * Constructor that instantiates the GameServer object
+     */
     public GameServer() {
         System.out.println("Server started");
         numPlayers = 0;
@@ -31,6 +58,9 @@ public class GameServer {
         }
     }
 
+    /**
+     * Waits for both players to connect before starting the read and write threads of the server
+     */
     public void acceptConnections() {
         try {
             System.out.println("Waiting for connections...");
@@ -77,17 +107,26 @@ public class GameServer {
     }
 
 
+    /**
+     * Private class for the thread that reads from both of the players' clients
+     */
     private class ReadFromClient implements Runnable {
         
         private int playerID;
         private DataInputStream dataIn;
 
+        /**
+         * Instantiates the ReadFromClient object
+         */
         public ReadFromClient(int pid, DataInputStream in) {
             playerID = pid;
             dataIn = in;
             System.out.println("RFC" + playerID + " Runnable created");
         }
 
+        /**
+         * Method for starting the thread
+         */
         public void run() {
             try {
                 
@@ -121,17 +160,28 @@ public class GameServer {
 
     }
 
+    /**
+     * Inner class for the thread that writes to both of the players' clients
+     */
     private class WriteToClient implements Runnable {
         
         private int playerID;
         private DataOutputStream dataOut;
 
+        /**
+         * Instantiates the WriteToClient object
+         * @param pid
+         * @param out
+         */
         public WriteToClient(int pid, DataOutputStream out) {
             playerID = pid;
             dataOut = out;
             System.out.println("WTC" + playerID + " Runnable created");
         }
 
+        /**
+         * Method for starting the thread
+         */
         public void run() {
             try {
                 
@@ -172,6 +222,9 @@ public class GameServer {
             }
         }
 
+        /**
+         * Sends the start message to the players if both players are connected
+         */
         public void sendStartMsg() {
             try {
                 
@@ -184,6 +237,10 @@ public class GameServer {
 
     }
 
+    /**
+     * Main method of the server
+     * @param args
+     */
     public static void main(String[] args) {
         GameServer gs = new GameServer();
         gs.acceptConnections();

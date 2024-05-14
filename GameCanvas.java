@@ -1,3 +1,24 @@
+/**
+	This is a template for a Java file.
+	
+	@author Gabriel P. Hermosura (233080)
+    @author Evan Sebastian M. Garcia (232776)
+	@version 14 May 2024
+	
+	I have not discussed the Java language code in my program 
+	with anyone other than my instructor or the teaching assistants 
+	assigned to this course.
+
+	I have not used Java language code obtained from another student, 
+	or any other unauthorized source, either modified or unmodified.
+
+	If any Java language code or documentation used in my program 
+	was obtained from another source, such as a textbook or website, 
+	that has been clearly noted with a proper citation in the comments 
+	of my program.
+**/
+
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -6,6 +27,10 @@ import javax.imageio.ImageIO;
 import java.io.*;
 import java.util.*;
 
+/**
+ * GameCanvas is where all the elements and objects of the game will be instantiated and drawn.
+ * This class also contains the game loop, as well as several methods for collision, movement, and other game functions.
+ */
 public class GameCanvas extends JComponent {
     
     private ArrayList<Wall> walls;
@@ -57,9 +82,11 @@ public class GameCanvas extends JComponent {
     private UserInterface enemyWaiting;
     private ArrayList<UserInterface> tiles;
 
-
+    /**
+     * Constructor class for GameCanvas.
+     * Instantiates all starting conditions for the game, map opjects, and images
+     */
     public GameCanvas(int id) {
-        //ongoing = false;
         playerID = id;
         p1Speed = 1;
         this.setPreferredSize(new Dimension(1000, 750));
@@ -69,9 +96,7 @@ public class GameCanvas extends JComponent {
         firstGame = true;
         meReady = false;
         enemyReady = false;
-        //entities = new ArrayList<>();
 
-        //stoneTile bg
         int col = 0;
         int row = 0;
         int tempX = 0;
@@ -139,7 +164,6 @@ public class GameCanvas extends JComponent {
         potatoIndicatorImage = new UserInterface("potato.png", 27, 87, 25, 25);
 
         
-
         String s;
         String a;
         if (playerID == 1) {
@@ -156,14 +180,15 @@ public class GameCanvas extends JComponent {
         enemyWaiting = new UserInterface(a, 300, 190, 400, 100);
 
         createPlayers();
-        //starts the game loop
         t = new MyThread();
         t.start();
 
     }
 
+    /**
+     * Method for starting the game and restarting the fuse.
+     */
     public void startGame() {
-        System.out.println("tite");
         
         if (playerID == 1) {
             me.setX(75); me.setY(75);
@@ -176,22 +201,18 @@ public class GameCanvas extends JComponent {
         ongoing = true;
         fuse.restart();
         fuse.isExploded = false;
-        //System.out.println("tite");
         
     }
 
-    //game loop
-    //i think this goes in the server
+    /**
+     * Inner class where the thread for the game loop is made
+     */
     private class MyThread extends Thread {
         public void run() {
             try {
                 while (true) {
                     
-                    
                     Thread.sleep(5);
-                    //System.out.println(exploded);
-                    //me.getPlayerImage();
-                    //enemy.getPlayerImage();
 
                     if (!exploded && meReady && enemyReady) {
                         // y-axis movement
@@ -250,6 +271,10 @@ public class GameCanvas extends JComponent {
         }
     }
 
+
+    /**
+     * Overrides the paintcomponent and draws all the components in the canvas
+     */
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -279,6 +304,7 @@ public class GameCanvas extends JComponent {
         } else if (ongoing && meReady && !enemyReady) waitingIndicator.draw(g2d);
 
         if (!ongoing && !firstGame && (!meReady & !enemyReady)) {
+            System.out.println(ongoing);
             if (!me.getPotatoStatus()) winImage.draw(g2d);
             else loseImage.draw(g2d);
         } else if (!ongoing && (!meReady & enemyReady)) {
@@ -286,6 +312,10 @@ public class GameCanvas extends JComponent {
         }
     }
 
+    /**
+     * This method determines which side of the wall the player is colliding with, 
+     * returning the side as a string.
+     */
     public String wallCollision(Player p) {
         boolean tempB = false;
         Wall tempW = null;
@@ -306,7 +336,11 @@ public class GameCanvas extends JComponent {
         } return null;
 
     }
-
+    
+    /**
+     * Detects if the player is colliding with another player and returns
+     * a string that indicates what side of the player collides.
+     */
     public String playerCollision(Player p) {
         boolean tempC = false;
         Player otherPlayer = enemy;
@@ -325,7 +359,9 @@ public class GameCanvas extends JComponent {
 
     
 
-    
+    /**
+     * Moves the player up if the player is not colliding with the enemy or a wall
+     */
     public void movePlayerUp(Player p){
         if (!(wallCollision(p) == "up") && !(playerCollision(p) == "up")) {
             p.setVSpeed(-p1Speed);
@@ -336,6 +372,9 @@ public class GameCanvas extends JComponent {
         }
     }
 
+    /**
+     * Moves the player down if the player is not colliding with the enemy or a wall
+     */
     public void movePlayerDown(Player p){
         if (!(wallCollision(p) == "down") && !(playerCollision(p) == "down")) {
             p.setVSpeed(p1Speed);
@@ -343,7 +382,10 @@ public class GameCanvas extends JComponent {
             repaint();
         } else p.setVSpeed(0);
     }
-
+    
+    /**
+     * Moves the player left if the player is not colliding with the enemy or a wall
+     */
     public void movePlayerLeft(Player p){
         if (!(wallCollision(p) == "left") && !(playerCollision(p) == "left")) {
             p.setHSpeed(-p1Speed);
@@ -352,6 +394,9 @@ public class GameCanvas extends JComponent {
         } else p.setHSpeed(0);
     }
 
+    /**
+     * Moves the player right if the player is not colliding with the enemy or a wall
+     */
     public void movePlayerRight(Player p){
         if (!(wallCollision(p) == "right") && !(playerCollision(p) == "right")) {
             p.setHSpeed(p1Speed);
@@ -362,7 +407,10 @@ public class GameCanvas extends JComponent {
     
 
 
-    // dash methods
+    /**
+     * Method for making the player dash; when called increases the speed of the player
+     * Includes a cooldown for use of the dash, and updates the dash indicator
+     */
     public void dashPlayer(boolean b){
         if (dashCooldown == 0){
             dashCooldown = 300;
@@ -373,37 +421,70 @@ public class GameCanvas extends JComponent {
             p1Speed += 4;
         }
     }
-
+    /**
+     * Sets the speed of the player back to its default value
+     */
     public void resetSpeed(){
         p1Speed = 1;
     }
 
+    /**
+     * Updates the status of the boolean determining if the w key is pressed
+     */
     public void wPressed(boolean b) {
         wPressed = b;
     }
+    /**
+     * Updates the status of the boolean determinng if the a key is pressed
+     */
     public void aPressed(boolean b) {
         aPressed = b;
     }
+    /**
+     * Updates the status of the boolean determining if the s key is pressed
+     */
     public void sPressed(boolean b) {
         sPressed = b;
     }
+    /**
+     * Updates the status of the boolean determining if the d key is pressed
+     */
     public void dPressed(boolean b) {
         dPressed = b;
     }
 
+    /**
+     * Stops the player from moving vertically
+     */
     public void stopMovingY(Player p){ 
         p.setVSpeed(0);
     }
+    /**
+     * Stops the payer from moving horizontally
+     * @param p
+     */
     public void stopMovingX(Player p){
         p.setHSpeed(0);
     }
 
+    /**
+     * This is the class defining the Play Button.
+     * This creates a clickable play button (image) that once pressed, starts the game.
+     */
     public class PlayButton {
     
         private BufferedImage image;
         private int x, y;
         private Image img;
     
+        /**
+         * Instantiates a PlayButton object and adds a MouseListener object that starts the game 
+         * if the component is clicked
+         * @param x
+         * @param y
+         * @param width
+         * @param height
+         */
         public PlayButton(int x, int y, int width, int height) {
             
             this.x = x;
@@ -426,6 +507,9 @@ public class GameCanvas extends JComponent {
     
         }
     
+        /**
+         * Method for importing image files into the program
+         */
         private void importImg() {
             InputStream is = getClass().getResourceAsStream("play.png");
             try {
@@ -434,7 +518,10 @@ public class GameCanvas extends JComponent {
                 System.out.println("Exception at imporImg");
             }
         }
-    
+        
+        /**
+         * Draw method for imported images
+         */
         public void draw(Graphics2D g2d) {
             g2d.drawImage(img, x, y, null);
             
@@ -442,9 +529,10 @@ public class GameCanvas extends JComponent {
 
     }
 
-
-    //SERVER SHENANIGANS
-
+    /**
+     * Depending on which player client is active, creates the Player objects onto the
+     * GameCanvas according to player number
+     */
     public void createPlayers() {
         if (playerID == 1) {
             me = new Player(75, 75, 30, 0, 0, true);
@@ -456,81 +544,141 @@ public class GameCanvas extends JComponent {
     }
 
 
-    //Accessors and mutators
+    /**
+     * Mutator that sets the enemy ready
+     * @param ready
+     */
     public void setEnemyReady(boolean ready) {
         enemyReady = ready;
     }
 
+    /**
+     * Accessor method that returns if the player is ready or not
+     * @return
+     */
     public boolean getMeReady(){
         return meReady;
     }
-
+    
+    /**
+     * Accessor method that returns if the player is colliding
+     * @return
+     */
     public boolean getColliding() {
         return isColliding;
     }
-
+    
+    /**
+     * Acccessor method that returns if the player has the potato or not
+     * @return
+     */
     public boolean getMePotato() {
         return me.getPotatoStatus();
     }
-
+    
+    /**
+     * Accessor method that returns if the enemy has the potato or not
+     * @return
+     */
     public boolean getEnemyPotato() {
         return enemy.getPotatoStatus();
     }
 
+    /**
+     * Mutator method for collided
+     * @param b
+     */
     public void setCollided (boolean b){
         collided = b;
     }
 
+    /**
+     * Method to swap the potato status of the player
+     * If they have the potato, it will change to not having it, and vice versa
+     */
     public void swapPotatoStatus(Player p){
         p.changePotatoStatus();
     }
 
+    /**
+     * Accessor method that returns player x position
+     */
     public int meGetX() {
         return me.getX();
     }
 
+    /**
+     * Accessor method that returns player y position
+     */
     public int meGetY() {
         return me.getY();
     }
 
+    /**
+     * Mutator method to set enemy x position
+     * Used through communicating with network
+     */
     public void enemySetX(int amt) {
         enemy.setX(amt);
     }
 
+    /**
+     * Mutator mehtod to set enemy y position
+     * Used through communicating with network
+     */
     public void enemySetY(int amt) {
         enemy.setY(amt);
     }
 
+    /**
+     * Accessor method that returns current player on client
+     */
     public Player getMe() {
         return me;
     }
 
+    /**
+     * Accessor method that returns enemy player
+     */
     public Player getEnemy() {
         return enemy;
     }
 
+    /**
+     * Mutator method that sets boolean to indicate the bomb as exploded
+     */
     public void setExploded(boolean b) {
         exploded = b;
     }
 
+    /**
+     * Accessor method that returns if the fuse has exploded or not
+     */
     public boolean getFuseExploded() {
         return fuse.isExploded;
     }
-
+    
+    /**
+     * Mutator method that sets the enemy's direction
+     * @param i
+     */
     public void setEnemyDirection(int i) {
         if (i == 1) enemy.setDirection("up");
         if (i == 2) enemy.setDirection("down");
         if (i == 3) enemy.setDirection("left");
         if (i == 4) enemy.setDirection("right");
     }
-
+    
+    /**
+     * Accessor method that returns what direction the player is facing
+     * @return
+     */
     public int meGetDirection(){
         int x = 0;
         if (me.getDirection() == "up") x = 1;
         if (me.getDirection() == "down") x = 2;
         if (me.getDirection() == "left") x = 3;
         if (me.getDirection() == "right") x = 4;
-
         return x;
     }
 

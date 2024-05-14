@@ -1,9 +1,34 @@
+/**
+	This is a template for a Java file.
+	
+	@author Gabriel P. Hermosura (233080)
+    @author Evan Sebastian M. Garcia (232776)
+	@version 14 May 2024
+	
+	I have not discussed the Java language code in my program 
+	with anyone other than my instructor or the teaching assistants 
+	assigned to this course.
+
+	I have not used Java language code obtained from another student, 
+	or any other unauthorized source, either modified or unmodified.
+
+	If any Java language code or documentation used in my program 
+	was obtained from another source, such as a textbook or website, 
+	that has been clearly noted with a proper citation in the comments 
+	of my program.
+**/
+
+
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/**
+ * This class is where the GUI is created and where key inputs are detected
+ * This class also interacts with the GameServer to rad and write information
+ */
 public class GameFrame {
 
     private GameCanvas canvas;
@@ -18,6 +43,9 @@ public class GameFrame {
     private ReadFromServer rfsRunnable;
     private WriteToServer wtsRunnable;
 
+    /**
+     * This clsas instantiates a GameFrame object
+     */
     public GameFrame() {
         frame = new JFrame();
         cp = (JPanel) frame.getContentPane();
@@ -30,12 +58,13 @@ public class GameFrame {
         rightTrue = 0;
     }
 
+    /**
+     * Creates the GUI that will be displayed for the user using GameCanvas
+     */
     public void setUpGUI() {
         frame.setTitle("Player " + playerID + ": Hot Potato");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setLocationRelativeTo(null);
         frame.setResizable(false);
-        //Container cp = frame.getContentPane();
         
         canvas = new GameCanvas(playerID);
         
@@ -45,25 +74,19 @@ public class GameFrame {
         frame.setVisible(true);
     }
 
-
+    /**
+     * Adds the key bindings for the game
+     * Maps WASD keys to movment functions of the player
+     */
     public void addKeyBindings() {
         ActionMap am = cp.getActionMap();
         InputMap im = cp.getInputMap();
 
         AbstractAction moveUp = new AbstractAction() {
             public void actionPerformed(ActionEvent ae) {
-                /*
-                if (keyCounter == 0) keyCounter = 1;
-                else if (keyCounter == 1) keyCounter = 2;
-
-                if (keyCounter > 0) {
-                    canvas.movePlayerUp();
-                }
-                System.out.println(keyCounter); */
 
                 upTrue = 1;
                 amtKeysY = upTrue + downTrue;
-                //canvas.movePlayerUp();
                 canvas.wPressed(true);
 
             }
@@ -74,9 +97,7 @@ public class GameFrame {
 
                 downTrue = 1;
                 amtKeysY = upTrue + downTrue;
-                //canvas.movePlayerDown();
                 canvas.sPressed(true);
-                //System.out.println("down");
             }
         };
 
@@ -85,9 +106,7 @@ public class GameFrame {
 
                 rightTrue = 1;
                 amtKeysX = leftTrue + rightTrue;
-                //canvas.movePlayerRight();
                 canvas.dPressed(true);
-                //System.out.println("right");
             }
         };
 
@@ -96,9 +115,7 @@ public class GameFrame {
 
                 leftTrue = 1;
                 amtKeysX = leftTrue + rightTrue;
-                //canvas.movePlayerLeft();
                 canvas.aPressed(true);
-                //System.out.println("left");
             }
         };
 
@@ -118,7 +135,6 @@ public class GameFrame {
                 downTrue = 0;
                 amtKeysY -= 1;
                 if (downTrue == 0) 
-                //canvas.stopMovingY();
                 canvas.sPressed(false);
             }
         };
@@ -129,7 +145,6 @@ public class GameFrame {
                 leftTrue = 0;
                 amtKeysX -= 1;
                 if (leftTrue == 0) 
-                //canvas.stopMovingX();
                 canvas.aPressed(false);
             }
         };
@@ -140,7 +155,6 @@ public class GameFrame {
                 rightTrue = 0;
                 amtKeysX -= 1;  
                 if (rightTrue == 0) 
-                //canvas.stopMovingX();
                 canvas.dPressed(false);
             }
         };
@@ -177,32 +191,26 @@ public class GameFrame {
         im.put(KeyStroke.getKeyStroke(68, 0, true), "rightEnd");
     }
 
-    //DI PA GUMAGANA GAANO UNG DIAGONAL SHIT
+    /**
+     * Returns a boolean that determines if the player is going diagonal
+     * @return
+     */
     public boolean goingDiagonal() {
         if (amtKeysX > 0 && amtKeysY > 0) return true;
         else return false;
     }
 
 
-
-
-    //
-    //
-    //
-    //SERVER SHENANIGANS
-    //
-    //
-    //
-
-
-
+    /**
+     * Method for connecting to the server
+     */
     public void connectToServer() {
         try {
             String host = "";
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("IP Adress : ");
-            host = scanner.nextLine();
-
+            try (Scanner scanner = new Scanner(System.in)) {
+                System.out.print("IP Adress : ");
+                host = scanner.nextLine();
+            }
             socket = new Socket(host, 23307);
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
@@ -221,16 +229,25 @@ public class GameFrame {
         }
     }
 
-
+    
+    /**
+     * The inner class for the thread that reads from the server
+     * This class reads player positions, direction, ready status, and collisions
+     */
     private class ReadFromServer implements Runnable {
 
         private DataInputStream dataIn;
 
+        /** Instantiates the ReadFromServer object
+         */
         public ReadFromServer(DataInputStream in) {
             dataIn = in;
             System.out.println("RFS Runnable created");
         }
 
+        /**
+         * Runs the thread
+         */
         public void run() {
             try {
                 while (true) {
@@ -254,7 +271,10 @@ public class GameFrame {
                 System.out.println("IOException from RFS run()");
             }
         }
-
+    
+        /**
+         * Waits for the server to send a message before creating and starting the read and write thread
+         */
         public void waitForStartMsg() {
             try {
                 
@@ -273,15 +293,26 @@ public class GameFrame {
     }
     
 
+    /**
+     * The inner class for the thread that writes to the server.
+     * This class writes player positions, direction, ready status, and collisions.
+     */
     private class WriteToServer implements Runnable {
 
         private DataOutputStream dataOut;
 
+        /**
+         * Instantiates the WriteToServer object
+         * @param out
+         */
         public WriteToServer(DataOutputStream out) {
             dataOut = out;
             System.out.println("WTS Runnable created");
         }
 
+        /**
+         * Method that runs the thread
+         */
         public void run() {
             try {
                 
