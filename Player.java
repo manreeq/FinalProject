@@ -32,7 +32,7 @@ public class Player implements DrawingObject{
     private int hspeed, vspeed;
     private boolean hasPotato;
     private String direction;
-    private UserInterface up1, up2, right1, right2, left1, left2, down1, down2;
+    private UserInterface up1, right1, left1, down1;
     UserInterface sprite;
 
     /**
@@ -57,13 +57,9 @@ public class Player implements DrawingObject{
     public void getPlayerImage() {
 
             up1 = new UserInterface("up1.png", x, y, side, side);
-            up2 = new UserInterface("up2.png", x, y, side, side);
             down1 = new UserInterface("down1.png", x, y, side, side);
-            down2 = new UserInterface("down2.png", x, y, side, side);
             left1 = new UserInterface("left1.png", x, y, side, side);
-            left2 = new UserInterface("left2.png", x, y, side, side);
             right1 = new UserInterface("right1.png", x, y, side, side);
-            right2 = new UserInterface("right2.png", x, y, side, side);
             
         }
 
@@ -100,13 +96,9 @@ public class Player implements DrawingObject{
         y += vspeed;
 
         up1.tick(hspeed, vspeed);
-        up2.tick(hspeed, vspeed);
         right1.tick(hspeed, vspeed);
-        right2.tick(hspeed, vspeed);
         left1.tick(hspeed, vspeed);
-        left2.tick(hspeed, vspeed);
         down1.tick(hspeed, vspeed);
-        down2.tick(hspeed, vspeed);
     }
 
     /**
@@ -218,13 +210,9 @@ public class Player implements DrawingObject{
     public void setX(int x) {
         this.x = x;
         up1.setX(x);
-        up2.setX(x);
         right1.setX(x);
-        right2.setX(x);
         left1.setX(x);
-        left2.setX(x);
         down1.setX(x);
-        down2.setX(x);
     }
 
     /**
@@ -233,13 +221,9 @@ public class Player implements DrawingObject{
     public void setY(int y) {
         this.y = y;
         up1.setY(y);
-        up2.setY(y);
         right1.setY(y);
-        right2.setY(y);
         left1.setY(y);
-        left2.setY(y);
         down1.setY(y);
-        down2.setY(y);
     }
 
     /**
