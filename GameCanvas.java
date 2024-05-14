@@ -65,7 +65,7 @@ public class GameCanvas extends JComponent {
 
     public GameCanvas(int id) {
         playerID = id;
-        p1Speed = 10;
+        p1Speed = 1;
         this.setPreferredSize(new Dimension(1000, 750));
         wc = Color.BLACK;
         walls = new ArrayList<>();
@@ -252,8 +252,6 @@ public class GameCanvas extends JComponent {
                     if (enemyReady) themredi.changeColor(Color.GREEN);
                     else themredi.changeColor(Color.RED);
 
-                    
-                    System.out.println(ongoing);
                     repaint();
                 }
 

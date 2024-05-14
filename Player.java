@@ -1,7 +1,5 @@
 import java.awt.*;
 import java.awt.geom.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Player implements DrawingObject{
     // appearance and functionality of player
@@ -27,6 +25,8 @@ public class Player implements DrawingObject{
     
     public void getPlayerImage() {
 
+            System.out.println("tiute");
+            /*
             up1 = new UserInterface("up1.png", x, y, side, side);
             up2 = new UserInterface("up2.png", x, y, side, side);
             down1 = new UserInterface("down1.png", x, y, side, side);
@@ -35,7 +35,7 @@ public class Player implements DrawingObject{
             left2 = new UserInterface("left2.png", x, y, side, side);
             right1 = new UserInterface("right1.png", x, y, side, side);
             right2 = new UserInterface("right2.png", x, y, side, side);
-            
+             */
         }
 
 
